@@ -21,7 +21,7 @@ provider "random" {
 # Interpolation sytanx is not allowed in Backend
 ######################################################
 terraform {
-  required_version = ">= 0.11.13"              // Terraform version
+  required_version = ">= 0.12"              // Terraform version
 
   backend "s3" {
     profile        = "doubledigit"

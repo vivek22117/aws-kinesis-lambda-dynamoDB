@@ -19,7 +19,7 @@ EOF
 }
 
 resource "aws_iam_policy" "rsvp_lambda_policy" {
-  name        = "RSVPLambdaProcessorPolicy"
+  name = "RSVPLambdaProcessorPolicy"
   description = "Policy to access dynamoDB"
   path = "/"
   policy = <<EOF
@@ -40,12 +40,25 @@ resource "aws_iam_policy" "rsvp_lambda_policy" {
       "Action": [
         "dynamodb:DescribeTable",
         "dynamodb:Query",
-        "dynamodb:Scan,
+        "dynamodb:Scan",
         "dynamodb:PutItem",
         "dynamodb:UpdateItem",
         "dynamodb:DeleteItem"
       ],
       "Resource": "${aws_dynamodb_table.rsvp_record_table.arn}"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+                "kinesis:DescribeStream",
+                "kinesis:DescribeStreamSummary",
+                "kinesis:GetRecords",
+                "kinesis:GetShardIterator",
+                "kinesis:ListShards",
+                "kinesis:ListStreams",
+                "kinesis:SubscribeToShard"
+      ],
+      "Resource": "${aws_kinesis_stream.rsvp_record_stream.arn}"
     }
   ]
 }

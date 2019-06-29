@@ -11,7 +11,7 @@ public class PropertyLoader {
 
         try {
             Properties prop = new Properties();
-            String propFileName = "config.properties";
+            String propFileName = "application.properties";
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             InputStream inputStream = loader.getResourceAsStream(propFileName);
 

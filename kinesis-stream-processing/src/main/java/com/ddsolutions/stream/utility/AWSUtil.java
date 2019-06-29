@@ -2,6 +2,7 @@ package com.ddsolutions.stream.utility;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
 import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sqs.AmazonSQS;
@@ -31,8 +32,10 @@ public class AWSUtil {
 
     private AWSCredentialsProvider getAWSCredentials() {
         if (awsCredentialsProvider == null) {
-            boolean caller = Boolean.parseBoolean(PropertyLoader.getPropValues("caller"));
-            if (caller) {
+            String caller = PropertyLoader.getPropValues("caller");
+            if (caller.equals("lambda")) {
+                awsCredentialsProvider = new EnvironmentVariableCredentialsProvider();
+            } else if (caller.equals("ec2")) {
                 awsCredentialsProvider = new InstanceProfileCredentialsProvider(true);
             } else {
                 awsCredentialsProvider = new DefaultAWSCredentialsProviderChain();
