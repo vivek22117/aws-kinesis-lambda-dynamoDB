@@ -7,12 +7,12 @@ import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class AWSUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AWSUtil.class);
+    private static final Logger LOGGER = LogManager.getLogger(AWSUtil.class);
 
     private static AWSCredentialsProvider awsCredentialsProvider;
 
@@ -28,7 +28,6 @@ public class AWSUtil {
             throw ex;
         }
     }
-
 
     private AWSCredentialsProvider getAWSCredentials() {
         if (awsCredentialsProvider == null) {

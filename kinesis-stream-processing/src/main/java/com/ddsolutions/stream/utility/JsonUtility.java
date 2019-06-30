@@ -5,15 +5,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.List;
 
 public class JsonUtility {
 
-    private static Logger logger = LoggerFactory.getLogger(JsonUtility.class);
+    private static Logger logger = LogManager.getLogger(JsonUtility.class);
     private ObjectMapper objectMapper;
 
     public JsonUtility() {

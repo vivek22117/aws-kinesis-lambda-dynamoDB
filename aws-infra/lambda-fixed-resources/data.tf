@@ -6,6 +6,6 @@ data "terraform_remote_state" "backend" {
     profile = "doubledigit"
     bucket  = "${var.s3_bucket_prefix}-${var.environment}-${var.default_region}"
     key     = "state/${var.environment}/aws/terraform.tfstate"
-    region  = "${var.default_region}"
+    region  = var.default_region
   }
 }

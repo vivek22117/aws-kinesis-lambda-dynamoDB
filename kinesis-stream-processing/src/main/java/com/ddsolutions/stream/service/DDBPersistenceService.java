@@ -5,8 +5,8 @@ import com.ddsolutions.stream.domain.RSVPEventRecord;
 import com.ddsolutions.stream.entity.LatestRSVPRecord;
 import com.ddsolutions.stream.utility.JsonUtility;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.Instant;
 import java.util.HashSet;
@@ -17,7 +17,7 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 
 public class DDBPersistenceService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DDBPersistenceService.class);
+    private static final Logger LOGGER = LogManager.getLogger(DDBPersistenceService.class);
 
     private DynamoDBOperation dynamoDBOperation;
     private JsonUtility jsonUtility;
@@ -39,6 +39,7 @@ public class DDBPersistenceService {
         reportedRecords.add(createDDBRecord(rsvpEventRecord, rsvpTime));
 
         reportedRecords.forEach(reportedRecord -> dynamoDBOperation.save(reportedRecord));
+        LOGGER.debug("RSVP record persistence completed!");
     }
 
     private LatestRSVPRecord createDDBRecord(RSVPEventRecord rsvpEventRecord, Instant rsvpTime) throws JsonProcessingException {
