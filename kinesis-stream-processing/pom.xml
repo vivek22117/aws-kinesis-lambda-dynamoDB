@@ -27,6 +27,20 @@
             <version>2.2.6</version>
         </dependency>
 
+        <!-- Used only when UserRecord.deaggregator() api is used -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>amazon-kinesis-client</artifactId>
+            <version>1.10.0</version>
+        </dependency>
+
+        <!-- Used only when RecordDeaggregator.stram() api is used
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>amazon-kinesis-deaggregator</artifactId>
+            <version>1.0.3</version>
+        </dependency>-->
+
         <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-kinesis -->
         <dependency>
             <groupId>com.amazonaws</groupId>

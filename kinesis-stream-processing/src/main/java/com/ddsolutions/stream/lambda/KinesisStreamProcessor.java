@@ -1,14 +1,17 @@
 package com.ddsolutions.stream.lambda;
 
 
+import com.amazonaws.services.kinesis.clientlibrary.types.UserRecord;
 import com.amazonaws.services.lambda.runtime.events.KinesisEvent;
 import com.ddsolutions.stream.domain.RSVPEventRecord;
 import com.ddsolutions.stream.service.DDBPersistenceService;
+import com.ddsolutions.stream.utility.GzipUtility;
 import com.ddsolutions.stream.utility.JsonUtility;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,7 +36,9 @@ public class KinesisStreamProcessor {
 
         try {
             records.stream()
-                    .map(record -> new String(record.getKinesis().getData().array()))
+                    .map(x -> UserRecord.deaggregate(Collections.singletonList(x.getKinesis())))
+                    .flatMap(List::stream)
+                    .map(record -> new String(record.getData().array()))
                     .map(data -> GzipUtility.decompressData(data.getBytes())).filter(Objects::nonNull)
                     .map(GzipUtility::deserializeData).filter(Objects::nonNull)
                     .map(this::convertToObject).filter(Objects::nonNull)

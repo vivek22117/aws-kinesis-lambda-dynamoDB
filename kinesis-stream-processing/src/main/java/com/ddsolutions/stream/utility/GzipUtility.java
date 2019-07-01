@@ -46,7 +46,8 @@ public class GzipUtility {
                 }
             }
         } catch (IOException ex) {
-            throw new RuntimeException("Failed to decompress the file.." + ex.getMessage());
+            LOGGER.error("Failed to decompress the file..", ex);
+            return null;
         }
     }
 
