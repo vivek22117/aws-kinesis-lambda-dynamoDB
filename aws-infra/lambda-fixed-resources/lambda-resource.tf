@@ -14,6 +14,8 @@ data "archive_file" "rsvp_lambda_jar" {
 
 
 resource "aws_lambda_function" "rsvp_lambda_processor" {
+  depends_on = ["aws_iam_role.rsvp_lambda_role", "aws_iam_policy.rsvp_lambda_policy"]
+
   description = "Lambda function to process RSVP event"
 
   function_name = var.rsvp_lambda
@@ -33,6 +35,8 @@ resource "aws_lambda_function" "rsvp_lambda_processor" {
 }
 
 resource "aws_lambda_event_source_mapping" "kinesis_lambda_event_mapping" {
+  depends_on = ["aws_iam_role.rsvp_lambda_role", "aws_kinesis_stream.rsvp_record_stream", "aws_lambda_function.rsvp_lambda_processor"]
+
   batch_size        = 100
   event_source_arn  = aws_kinesis_stream.rsvp_record_stream.arn
   function_name     = aws_lambda_function.rsvp_lambda_processor.arn

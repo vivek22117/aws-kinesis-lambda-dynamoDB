@@ -25,7 +25,7 @@ public class DynamoDBOperation {
     public DynamoDBOperation() {
         this.dynamoDBMapper = new DynamoDBMapper(createClient(),
                 new DynamoDBMapperConfig.Builder()
-                        .withSaveBehavior(DynamoDBMapperConfig.SaveBehavior.UPDATE).build());
+                        .withSaveBehavior(DynamoDBMapperConfig.SaveBehavior.APPEND_SET).build());
     }
 
     public void save(LatestRSVPRecord recordObject) {
@@ -34,7 +34,7 @@ public class DynamoDBOperation {
             dynamoDBMapper.save(recordObject);
             LOGGER.debug("Record persisted successfully in DynamoDB");
         } catch (Exception ex) {
-            LOGGER.error("Unable to persist record");
+            LOGGER.error("Unable to persist latest rsvp record");
         }
     }
 

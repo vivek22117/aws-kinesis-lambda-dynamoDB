@@ -1,8 +1,8 @@
 package com.ddsolutions.stream.utility;
 
 import com.ddsolutions.stream.domain.RSVPEventRecord;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -12,7 +12,7 @@ import java.util.zip.GZIPOutputStream;
 
 public class GzipUtility {
 
-    private static final Logger LOGGER = LogManager.getLogger(GzipUtility.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GzipUtility.class);
 
     public static byte[] compressData(byte[] bytes) {
 
@@ -22,7 +22,7 @@ public class GzipUtility {
             }
             return outputStream.toByteArray();
         } catch (IOException ex) {
-            LOGGER.error("Failed to zip the file..", ex);
+            LOGGER.error("Failed to zip the file.." + ex.getMessage());
             return null;
         }
     }
@@ -46,8 +46,7 @@ public class GzipUtility {
                 }
             }
         } catch (IOException ex) {
-            LOGGER.error("Failed to decompress the file..", ex);
-            return null;
+            throw new RuntimeException("Failed to decompress the file.." + ex.getMessage());
         }
     }
 

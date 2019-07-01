@@ -4,7 +4,6 @@ package com.ddsolutions.stream.lambda;
 import com.amazonaws.services.lambda.runtime.events.KinesisEvent;
 import com.ddsolutions.stream.domain.RSVPEventRecord;
 import com.ddsolutions.stream.service.DDBPersistenceService;
-import com.ddsolutions.stream.utility.GzipUtility;
 import com.ddsolutions.stream.utility.JsonUtility;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

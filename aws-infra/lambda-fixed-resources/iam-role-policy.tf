@@ -1,4 +1,6 @@
 resource "aws_iam_role" "rsvp_lambda_role" {
+  depends_on = ["aws_iam_policy.rsvp_lambda_policy"]
+
   name = "RSVPLambdaRole"
 
   assume_role_policy = <<EOF
