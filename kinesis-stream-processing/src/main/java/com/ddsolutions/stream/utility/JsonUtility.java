@@ -37,7 +37,7 @@ public class JsonUtility {
         try {
             return objectMapper.readValue(json, object);
         } catch (JsonProcessingException jx) {
-            logger.error("Unable to conver json string to object: ", jx);
+            logger.error("Unable to convert json string to object: ", jx);
         }
         return null;
     }

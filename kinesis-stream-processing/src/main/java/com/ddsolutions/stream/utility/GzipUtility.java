@@ -14,7 +14,6 @@ public class GzipUtility {
     private static final Logger LOGGER = LogManager.getLogger(GzipUtility.class);
 
     public static byte[] compressData(byte[] bytes) {
-
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(outputStream)) {
                 gzipOutputStream.write(bytes);
@@ -29,8 +28,10 @@ public class GzipUtility {
     public static String decompressData(byte[] compressData) {
 
         if (!isZipped(compressData)) {
+            LOGGER.debug("This is what happened");
             return new String(compressData);
         }
+        LOGGER.debug("decompressing rsvp event");
         try (ByteArrayInputStream inputStream = new ByteArrayInputStream(compressData)) {
             try (GZIPInputStream gzipInputStream = new GZIPInputStream(inputStream)) {
                 try (InputStreamReader inputStreamReader = new InputStreamReader(gzipInputStream, StandardCharsets.UTF_8)) {
@@ -40,6 +41,7 @@ public class GzipUtility {
                         while ((line = bufferedReader.readLine()) != null) {
                             builder.append(line);
                         }
+                        LOGGER.debug("decompression done! {}", builder.toString());
                         return builder.toString();
                     }
                 }

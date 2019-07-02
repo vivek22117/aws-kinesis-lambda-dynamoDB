@@ -38,8 +38,8 @@ public class KinesisStreamProcessor {
             records.stream()
                     .map(x -> UserRecord.deaggregate(Collections.singletonList(x.getKinesis())))
                     .flatMap(List::stream)
-                    .map(record -> new String(record.getData().array()))
-                    .map(data -> GzipUtility.decompressData(data.getBytes())).filter(Objects::nonNull)
+                    .map(record -> record.getData().array())
+                    .map(GzipUtility::decompressData).filter(Objects::nonNull)
                     .map(GzipUtility::deserializeData).filter(Objects::nonNull)
                     .map(this::convertToObject).filter(Objects::nonNull)
                     .forEach(rsvpEvent -> {

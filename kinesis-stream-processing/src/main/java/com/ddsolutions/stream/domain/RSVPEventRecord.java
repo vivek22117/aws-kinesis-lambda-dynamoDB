@@ -11,6 +11,10 @@ public class RSVPEventRecord {
     private Event event;
     private Group group;
 
+    public RSVPEventRecord() {
+        super();
+    }
+
     public RSVPEventRecord(Venue venue, String visibility, String response,
                            int guests, Member member, int rsvp_id, long mtime, Event event, Group group) {
         this.venue = venue;
