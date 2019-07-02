@@ -1,8 +1,7 @@
 package com.ddsolutions.stream.utility;
 
-import com.ddsolutions.stream.domain.RSVPEventRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -12,7 +11,7 @@ import java.util.zip.GZIPOutputStream;
 
 public class GzipUtility {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GzipUtility.class);
+    private static final Logger LOGGER = LogManager.getLogger(GzipUtility.class);
 
     public static byte[] compressData(byte[] bytes) {
 
@@ -55,11 +54,11 @@ public class GzipUtility {
         return (compressData[0] == (byte) (GZIPInputStream.GZIP_MAGIC)) && (compressData[1] == (byte) (GZIPInputStream.GZIP_MAGIC >> 8));
     }
 
-    public static byte[] serializeData(RSVPEventRecord rsvpEventRecord) {
+    public static byte[] serializeData(String rsvpEventRecord) {
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
              ObjectOutputStream output = new ObjectOutputStream(bos)
         ) {
-            output.writeObject(rsvpEventRecord.toString());
+            output.writeObject(rsvpEventRecord);
             LOGGER.info("Object has been serialized");
             return Base64.getEncoder().encode(bos.toByteArray());
         } catch (Exception ex) {
@@ -69,6 +68,7 @@ public class GzipUtility {
     }
 
     public static String deserializeData(String data) {
+        LOGGER.debug(data);
         byte[] decode = Base64.getDecoder().decode(data);
         try (ByteArrayInputStream bis = new ByteArrayInputStream(decode);
              ObjectInputStream out = new ObjectInputStream(bis)) {

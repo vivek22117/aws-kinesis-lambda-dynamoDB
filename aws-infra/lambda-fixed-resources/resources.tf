@@ -53,21 +53,21 @@ resource "aws_dynamodb_table" "rsvp_record_table" {
   }
 
   global_secondary_index {
-    name               = "EventIdIndex"
-    hash_key           = "rsvp_event_id"
-    range_key          =  var.range_key
-    write_capacity     = 2
-    read_capacity      = 2
-    projection_type    = "KEYS_ONLY"
+    name            = "EventIdIndex"
+    hash_key        = "rsvp_event_id"
+    range_key       = var.range_key
+    write_capacity  = 2
+    read_capacity   = 2
+    projection_type = "KEYS_ONLY"
   }
 
   global_secondary_index {
-    name               = "VenueIdIndex"
-    hash_key           = "rsvp_venue_id"
-    range_key          = var.range_key
-    write_capacity     = 2
-    read_capacity      = 2
-    projection_type    = "KEYS_ONLY"
+    name            = "VenueIdIndex"
+    hash_key        = "rsvp_venue_id"
+    range_key       = var.range_key
+    write_capacity  = 2
+    read_capacity   = 2
+    projection_type = "KEYS_ONLY"
   }
 
   tags = "${merge(local.common_tags, map("Name", "rsvp-dynamoDB"))}"
