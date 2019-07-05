@@ -12,6 +12,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TimeZone;
 
 import static java.lang.String.valueOf;
 import static java.time.temporal.ChronoUnit.SECONDS;
@@ -23,6 +24,10 @@ public class DDBPersistenceService {
 
     private DynamoDBProcessing dynamoDBProcessing;
     private JsonUtility jsonUtility;
+
+    static {
+        TimeZone.getTimeZone("UTC");
+    }
 
 
     public DDBPersistenceService() {

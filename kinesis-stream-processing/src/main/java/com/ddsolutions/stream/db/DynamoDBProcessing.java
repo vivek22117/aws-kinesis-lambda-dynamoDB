@@ -25,7 +25,7 @@ public class DynamoDBProcessing {
     private static final String EVENT_INDEX = "RSVPEventIndex";
     private static final String VENUE_INDEX = "RSVPVenueIndex";
 
-    private static final String PROJECTION_FIELD = "rsvp_record,event,venue";
+    private static final String PROJECTION_FIELD = "rsvp_record";
 
     private static final String EQUALS_OPT = " = ";
     private static final String DELIMITER = "-";
