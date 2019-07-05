@@ -90,7 +90,7 @@ public class DynamoDBProcessing {
     private final AmazonDynamoDBClientBuilder builder = AmazonDynamoDBClientBuilder
             .standard()
             .withRegion(Regions.US_EAST_1)
-            .withCredentials(new ProfileCredentialsProvider("doubledigit"));
+            .withCredentials(new EnvironmentVariableCredentialsProvider());
 
     private AmazonDynamoDB createClient() {
         return builder.build();
