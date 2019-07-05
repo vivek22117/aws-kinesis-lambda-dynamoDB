@@ -29,7 +29,7 @@ public class DDBPersistenceService {
         this(new DynamoDBProcessing(), new JsonUtility());
     }
 
-    private DDBPersistenceService(DynamoDBProcessing dynamoDBProcessing, JsonUtility jsonUtility) {
+    DDBPersistenceService(DynamoDBProcessing dynamoDBProcessing, JsonUtility jsonUtility) {
         this.dynamoDBProcessing = dynamoDBProcessing;
         this.jsonUtility = jsonUtility;
     }
@@ -47,18 +47,18 @@ public class DDBPersistenceService {
     private LatestRSVPRecord createDDBRecord(RSVPEventRecord rsvpEventRecord, Instant rsvpTime) throws JsonProcessingException {
         LatestRSVPRecord latestRSVPRecord = new LatestRSVPRecord();
 
-        latestRSVPRecord.setExpiryTime(String.valueOf(Instant.now().plus(900, SECONDS).toEpochMilli()));
+        latestRSVPRecord.setExpiry_time(String.valueOf(Instant.now().plus(300, SECONDS).toEpochMilli()));
 
-        latestRSVPRecord.setRsvpId(valueOf(rsvpEventRecord.getRsvp_id()));
-        latestRSVPRecord.setRsvpMakeTime(rsvpTime.toString());
-        latestRSVPRecord.setCreatedDate(Instant.now().truncatedTo(SECONDS).toString());
-        latestRSVPRecord.setRsvpEventId(createRsvpEventId(rsvpEventRecord));
-        latestRSVPRecord.setRsvpVenueId(createRsvpVenueId(rsvpEventRecord));
+        latestRSVPRecord.setRsvp_id(valueOf(rsvpEventRecord.getRsvp_id()));
+        latestRSVPRecord.setRsvp_makeTime(rsvpTime.toString());
+        latestRSVPRecord.setCreated_time(Instant.now().truncatedTo(SECONDS).toString());
+        latestRSVPRecord.setRsvp_with_event_id(createRsvpEventId(rsvpEventRecord));
+        latestRSVPRecord.setRsvp_with_venue_id(createRsvpVenueId(rsvpEventRecord));
 
         String rsvpRecord = jsonUtility.convertToJson(rsvpEventRecord);
         Set<String> rsvpRecordSet = new HashSet<>();
         rsvpRecordSet.add(rsvpRecord);
-        latestRSVPRecord.setRsvpEventRecord(rsvpRecordSet);
+        latestRSVPRecord.setRsvp_record(rsvpRecordSet);
         return latestRSVPRecord;
     }
 

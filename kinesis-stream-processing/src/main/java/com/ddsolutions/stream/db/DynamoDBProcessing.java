@@ -1,13 +1,11 @@
 package com.ddsolutions.stream.db;
 
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.util.CollectionUtils;
 import com.ddsolutions.stream.entity.LatestRSVPRecord;
@@ -37,7 +35,8 @@ public class DynamoDBProcessing {
     public DynamoDBProcessing() {
         this.dynamoDBMapper = new DynamoDBMapper(createClient(),
                 new DynamoDBMapperConfig.Builder()
-                        .withSaveBehavior(DynamoDBMapperConfig.SaveBehavior.APPEND_SET).build());
+                        .withSaveBehavior(DynamoDBMapperConfig.SaveBehavior.APPEND_SET)
+                        .build());
     }
 
     public void save(LatestRSVPRecord recordObject) {
@@ -91,7 +90,7 @@ public class DynamoDBProcessing {
     private final AmazonDynamoDBClientBuilder builder = AmazonDynamoDBClientBuilder
             .standard()
             .withRegion(Regions.US_EAST_1)
-            .withCredentials(new EnvironmentVariableCredentialsProvider());
+            .withCredentials(new ProfileCredentialsProvider("doubledigit"));
 
     private AmazonDynamoDB createClient() {
         return builder.build();
