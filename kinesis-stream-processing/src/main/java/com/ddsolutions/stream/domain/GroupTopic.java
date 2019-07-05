@@ -4,6 +4,9 @@ public class GroupTopic {
     private String urlkey;
     private String topic_name;
 
+    public GroupTopic() {
+    }
+
     public GroupTopic(String urlkey, String topic_name) {
         this.urlkey = urlkey;
         this.topic_name = topic_name;

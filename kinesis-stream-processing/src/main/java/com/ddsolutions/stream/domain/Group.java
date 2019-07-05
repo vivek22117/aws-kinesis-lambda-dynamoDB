@@ -13,6 +13,9 @@ public class Group {
     private String group_state;
     private double group_lat;
 
+    public Group() {
+    }
+
     public Group(List<GroupTopic> group_topics, String group_city, String group_country, int group_id,
                  String group_name, double group_lon, String group_urlname, String group_state, double group_lat) {
         this.group_topics = group_topics;

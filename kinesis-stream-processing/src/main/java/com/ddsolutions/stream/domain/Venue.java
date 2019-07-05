@@ -6,6 +6,9 @@ public class Venue {
     private double lat;
     private int venue_id;
 
+    public Venue() {
+    }
+
     public Venue(String venue_name, double lon, double lat, int venue_id) {
         this.venue_name = venue_name;
         this.lon = lon;

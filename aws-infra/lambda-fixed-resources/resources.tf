@@ -28,17 +28,17 @@ resource "aws_dynamodb_table" "rsvp_record_table" {
   }
 
   ttl {
-    attribute_name = "created_date"
+    attribute_name = "expiry_time"
     enabled        = true
   }
 
   attribute {
-    name = "rsvp_event_id"
+    name = "rsvp_with_event_id"
     type = "S"
   }
 
   attribute {
-    name = "rsvp_venue_id"
+    name = "rsvp_with_venue_id"
     type = "S"
   }
 
@@ -53,21 +53,23 @@ resource "aws_dynamodb_table" "rsvp_record_table" {
   }
 
   global_secondary_index {
-    name            = "EventIdIndex"
-    hash_key        = "rsvp_event_id"
+    name            = "RSVPEventIndex"
+    hash_key        = "rsvp_with_event_id"
     range_key       = var.range_key
     write_capacity  = 2
     read_capacity   = 2
-    projection_type = "KEYS_ONLY"
+    projection_type = "INCLUDE"
+    non_key_attributes = ["rsvp_record", "create_time"]
   }
 
   global_secondary_index {
-    name            = "VenueIdIndex"
-    hash_key        = "rsvp_venue_id"
+    name            = "RSVPVenueIndex"
+    hash_key        = "rsvp_with_venue_id"
     range_key       = var.range_key
     write_capacity  = 2
     read_capacity   = 2
-    projection_type = "KEYS_ONLY"
+    projection_type = "INCLUDE"
+    non_key_attributes = ["rsvp_record", "create_time"]
   }
 
   tags = "${merge(local.common_tags, map("Name", "rsvp-dynamoDB"))}"

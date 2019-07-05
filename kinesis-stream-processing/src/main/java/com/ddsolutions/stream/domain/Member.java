@@ -5,6 +5,9 @@ public class Member {
     private String photo;
     private String member_name;
 
+    public Member() {
+    }
+
     public Member(int member_id, String photo, String member_name) {
         this.member_id = member_id;
         this.photo = photo;

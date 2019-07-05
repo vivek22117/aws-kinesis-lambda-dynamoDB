@@ -6,6 +6,9 @@ public class Event {
     private long time;
     private String event_url;
 
+    public Event() {
+    }
+
     public Event(String event_name, String event_id, long time, String event_url) {
         this.event_name = event_name;
         this.event_id = event_id;
