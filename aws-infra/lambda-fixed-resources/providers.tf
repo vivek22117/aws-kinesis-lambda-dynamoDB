@@ -32,7 +32,7 @@ terraform {
     profile        = "doubledigit"
     bucket         = "teamconcept-tfstate-dev-us-east-1"
     dynamodb_table = "teamconcept-tfstate-dev-us-east-1"
-    key            = "state/dev/lambda/lm-kinesis-db/terraform.tfstate"
+    key            = "state/dev/lambda/rsvp-lambda-kinesis-db/terraform.tfstate"
     region         = "us-east-1"
     encrypt        = "true"
   }

@@ -22,7 +22,7 @@ EOF
 
 resource "aws_iam_policy" "rsvp_lambda_policy" {
   name = "RSVPLambdaProcessorPolicy"
-  description = "Policy to access dynamoDB"
+  description = "Policy to access DynamoDB"
   path = "/"
   policy = <<EOF
 {
