@@ -28,7 +28,7 @@ public class DDBPersistenceServiceTest {
     @Before
     public void setUp() {
 
-        ddbPersistenceService = new DDBPersistenceService(processing, jsonUtility);
+        ddbPersistenceService = new DDBPersistenceService(new DynamoDBProcessing(), new JsonUtility());
     }
 
     @Test
@@ -40,7 +40,7 @@ public class DDBPersistenceServiceTest {
     private RSVPEventRecord createRSVPRecord() {
         RSVPEventRecord record = new RSVPEventRecord();
 
-        record.setRsvp_id(554433221);
+        record.setRsvp_id(9999991);
         record.setEvent(createEvent());
         record.setMtime(Instant.now().toEpochMilli());
         record.setVenue(createVenue());
@@ -52,14 +52,14 @@ public class DDBPersistenceServiceTest {
         Venue venue = new Venue();
         venue.setLat(45.233);
         venue.setLon(26.98775);
-        venue.setVenue_id(1122334);
+        venue.setVenue_id(2999991);
 
         return venue;
     }
 
     private Event createEvent() {
         Event event = new Event();
-        event.setEvent_id("don2244");
+        event.setEvent_id("1999991");
         return event;
     }
 }

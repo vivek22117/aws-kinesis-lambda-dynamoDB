@@ -1,6 +1,9 @@
 package com.ddsolutions.stream.entity;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -27,8 +30,7 @@ public class LatestRSVPRecord implements Serializable {
     private String rsvp_with_venue_id;
 
     @DynamoDBAttribute(attributeName = "expiry_time")
-    private String expiry_time;
-
+    private long expiry_time;
 
 
     public String getRsvp_id() {
@@ -79,11 +81,11 @@ public class LatestRSVPRecord implements Serializable {
         this.rsvp_with_venue_id = rsvp_with_venue_id;
     }
 
-    public String getExpiry_time() {
+    public long getExpiry_time() {
         return expiry_time;
     }
 
-    public void setExpiry_time(String expiry_time) {
+    public void setExpiry_time(long expiry_time) {
         this.expiry_time = expiry_time;
     }
 

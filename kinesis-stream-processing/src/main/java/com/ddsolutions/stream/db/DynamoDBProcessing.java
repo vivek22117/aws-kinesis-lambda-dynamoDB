@@ -1,23 +1,25 @@
 package com.ddsolutions.stream.db;
 
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.util.CollectionUtils;
+import com.ddsolutions.stream.domain.RSVPEventRecord;
 import com.ddsolutions.stream.entity.LatestRSVPRecord;
+import com.ddsolutions.stream.utility.JsonUtility;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.util.*;
 
-import static java.util.Comparator.comparing;
-import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 public class DynamoDBProcessing {
     private static final Logger LOGGER = LogManager.getLogger(DynamoDBProcessing.class);
@@ -45,16 +47,16 @@ public class DynamoDBProcessing {
             dynamoDBMapper.save(recordObject);
             LOGGER.debug("Record persisted successfully in DynamoDB");
         } catch (Exception ex) {
-            LOGGER.error("Unable to persist latest rsvp record", ex);
+            LOGGER.error("Unable to persist latest rsvp record {}", recordObject.toString(), ex);
         }
     }
 
-    public List<String> getReportedDatesByEndDate(String rsvpId, String  eventId, int numOfRecords, String endDate) {
+    public List<RSVPEventRecord> getReportedDatesByEndDate(String rsvpId, String eventId, int numOfRecords, String endDate) {
         String itemKey = rsvpId + DELIMITER + eventId;
         String indexPartitionKey = getIndexPartitionKey(EVENT_INDEX);
 
         Map<String, AttributeValue> attributeMap = new HashMap<>();
-        attributeMap.put(":key", new AttributeValue().withS(itemKey));
+        attributeMap.put(":key", new AttributeValue().withS(eventId));
         attributeMap.put(":endDate", new AttributeValue().withS(endDate));
 
         DynamoDBQueryExpression<LatestRSVPRecord> queryExpression = new DynamoDBQueryExpression<LatestRSVPRecord>()
@@ -62,7 +64,7 @@ public class DynamoDBProcessing {
                 .withConsistentRead(false)
                 .addExpressionAttributeValuesEntry(":key", new AttributeValue().withS(itemKey))
                 .withKeyConditionExpression(
-                        indexPartitionKey + EQUALS_OPT + ":key" + " AND reportedDate <= :endDate")
+                        indexPartitionKey + EQUALS_OPT + ":key" + " AND rsvp_makeTime <= :endDate")
                 .withExpressionAttributeValues(attributeMap)
                 .withScanIndexForward(false)
                 .withProjectionExpression(PROJECTION_FIELD)
@@ -73,14 +75,24 @@ public class DynamoDBProcessing {
             return new ArrayList<>();
         }
 
-        /*Set<String> itemResult = query.getResults().
-                parallelStream().map(LatestRSVPRecord::getRsvpEventRecord).collect(toSet());*/
+        List<RSVPEventRecord> rsvpRecords = query.getResults().
+                stream().map(LatestRSVPRecord::getRsvp_record).flatMap(Collection::stream)
+                .map(record -> {
+                    try {
+                        return new JsonUtility().convertFromJson(record, RSVPEventRecord.class);
+                    } catch (IOException e) {
+                        LOGGER.error("Unable to parse json string");
+                        return null;
+                    }
+                }).collect(toList());
 
-        return null;//itemResult.stream().sorted(comparing(String::intern).reversed()).collect(toList());
+        return rsvpRecords.stream()
+                .sorted(Comparator.comparingLong(RSVPEventRecord::getMtime).reversed())
+                .collect(toList());
     }
 
     private String getIndexPartitionKey(String rsvpEventIndex) {
-        if(rsvpEventIndex.equals(EVENT_INDEX)){
+        if (rsvpEventIndex.equals(EVENT_INDEX)) {
             return "rsvp_with_event_id";
         } else {
             return "rsvp_with_venue_id";
@@ -91,6 +103,7 @@ public class DynamoDBProcessing {
             .standard()
             .withRegion(Regions.US_EAST_1)
             .withCredentials(new EnvironmentVariableCredentialsProvider());
+//            .withCredentials(new ProfileCredentialsProvider("profileName"));
 
     private AmazonDynamoDB createClient() {
         return builder.build();
