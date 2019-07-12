@@ -1,10 +1,12 @@
 package com.ddsolutions.stream.utility;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
 import com.amazonaws.auth.InstanceProfileCredentialsProvider;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -16,7 +18,7 @@ public class AWSUtil {
 
     private static AWSCredentialsProvider awsCredentialsProvider;
 
-    public AmazonSQS getSQSClient() {
+    public static AmazonSQS getSQSClient() {
         try {
             AWSCredentialsProvider awsCredentials = getAWSCredentials();
             return AmazonSQSClientBuilder.standard()
@@ -24,12 +26,25 @@ public class AWSUtil {
                     .withRegion(Regions.US_EAST_1)
                     .build();
         } catch (Exception ex) {
-            LOGGER.error("Exception occured.." + ex.getMessage());
+            LOGGER.error("Exception occurred.." + ex.getMessage());
             throw ex;
         }
     }
 
-    private AWSCredentialsProvider getAWSCredentials() {
+    public static AmazonDynamoDB getDynamoDBClient() {
+        try {
+            AWSCredentialsProvider awsCredentials = getAWSCredentials();
+            return AmazonDynamoDBClientBuilder.standard()
+                    .withCredentials(awsCredentials)
+                    .withRegion(Regions.US_EAST_1)
+                    .build();
+        } catch (Exception ex) {
+            LOGGER.error("Exception occurred.." + ex.getMessage());
+            throw ex;
+        }
+    }
+
+    private static AWSCredentialsProvider getAWSCredentials() {
         if (awsCredentialsProvider == null) {
             String caller = PropertyLoader.getPropValues("caller");
             if (caller.equals("lambda")) {
@@ -37,7 +52,7 @@ public class AWSUtil {
             } else if (caller.equals("ec2")) {
                 awsCredentialsProvider = new InstanceProfileCredentialsProvider(true);
             } else {
-                awsCredentialsProvider = new DefaultAWSCredentialsProviderChain();
+                awsCredentialsProvider = new ProfileCredentialsProvider("doubledigit");
             }
         }
         return awsCredentialsProvider;
