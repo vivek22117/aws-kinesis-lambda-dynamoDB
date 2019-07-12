@@ -4,6 +4,16 @@ variable "profile" {
   description = "AWS Profile name for credentials"
 }
 
+variable "session" {
+  type = "string"
+  description = "Terraform assume role session name"
+}
+
+variable "external_id" {
+  type = "string"
+  description = "Terraform assume role external id"
+}
+
 variable "environment" {
   type        = "string"
   description = "AWS Profile name for credentials"

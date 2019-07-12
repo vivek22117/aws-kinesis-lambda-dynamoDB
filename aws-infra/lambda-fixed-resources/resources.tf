@@ -3,7 +3,7 @@ resource "aws_kinesis_stream" "rsvp_record_stream" {
   shard_count      = var.shard_count
   retention_period = var.stream_retention
 
-  tags = "${merge(local.common_tags, map("Name", "rsvp-stream"))}"
+  tags = merge(local.common_tags, map("Name", "rsvp-stream"))
 }
 
 
@@ -76,5 +76,5 @@ resource "aws_dynamodb_table" "rsvp_record_table" {
     "created_time"]
   }
 
-  tags = "${merge(local.common_tags, map("Name", "rsvp-dynamoDB"))}"
+  tags = merge(local.common_tags, map("Name", "rsvp-dynamoDB"))
 }
