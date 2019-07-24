@@ -43,8 +43,16 @@ public class DDBPersistenceService {
 
         reportedRecords.add(createDDBRecord(rsvpEventRecord, rsvpTime));
 
-        reportedRecords.forEach(reportedRecord -> dynamoDBProcessing.save(reportedRecord));
-        LOGGER.debug("RSVP record persistence completed!");
+        reportedRecords.forEach(reportedRecord -> {
+            dynamoDBProcessing.save(reportedRecord);
+
+            LOGGER.debug("Last reported record persisted: \n"
+                    + "rsvpEventId: " + reportedRecord.getRsvp_id() + "\n"
+                    + "rsvpWithEventId: " + reportedRecord.getRsvp_with_event_id() + "\n"
+                    + "rsvpWithVenueId: " + reportedRecord.getRsvp_with_venue_id() + "\n"
+                    + "rsvpMakeTime: " + reportedRecord.getRsvp_makeTime() + "\n");
+        });
+
     }
 
     public void fetchRSVPRecords(String rsvpId, String eventId, String date, int numberOfRecords) {

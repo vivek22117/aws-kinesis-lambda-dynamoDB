@@ -4,6 +4,7 @@ package com.ddsolutions.stream.lambda;
 import com.amazonaws.services.kinesis.clientlibrary.types.UserRecord;
 import com.amazonaws.services.lambda.runtime.events.KinesisEvent;
 import com.ddsolutions.stream.domain.RSVPEventRecord;
+import com.ddsolutions.stream.service.CloudwatchOperation;
 import com.ddsolutions.stream.service.DDBPersistenceService;
 import com.ddsolutions.stream.utility.GzipUtility;
 import com.ddsolutions.stream.utility.JsonUtility;
@@ -17,17 +18,23 @@ import java.util.Objects;
 
 public class KinesisStreamProcessor {
     private static final Logger LOGGER = LogManager.getLogger(KinesisStreamProcessor.class);
+    private static final String METRIC_NAME = "FailedRecordsCount";
+    private static final String DIMENSION_NAME = "ProcessingFailed";
+    private static final String DIMENSION_VALUE = "ProcessingFailedCount";
 
     private JsonUtility jsonUtility;
     private DDBPersistenceService ddbPersistenceService;
+    private CloudwatchOperation cloudwatchOperation;
 
     public KinesisStreamProcessor() {
-        this(new JsonUtility(), new DDBPersistenceService());
+        this(new JsonUtility(), new DDBPersistenceService(), new CloudwatchOperation());
     }
 
-    private KinesisStreamProcessor(JsonUtility jsonUtility, DDBPersistenceService ddbPersistenceService) {
+    private KinesisStreamProcessor(JsonUtility jsonUtility, DDBPersistenceService ddbPersistenceService,
+                                   CloudwatchOperation cloudwatchOperation) {
         this.jsonUtility = jsonUtility;
         this.ddbPersistenceService = ddbPersistenceService;
+        this.cloudwatchOperation = cloudwatchOperation;
     }
 
     public void processLatestReportedEvent(KinesisEvent kinesisEvent) {
@@ -59,6 +66,7 @@ public class KinesisStreamProcessor {
             return jsonUtility.convertFromJson(data, RSVPEventRecord.class);
         } catch (IOException e) {
             LOGGER.error("Json conversion failed for {}", data, e);
+            cloudwatchOperation.putMetricData(METRIC_NAME, DIMENSION_NAME, DIMENSION_VALUE);
             return null;
         }
     }
