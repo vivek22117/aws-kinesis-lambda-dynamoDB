@@ -2,12 +2,6 @@ provider "aws" {
   region  = var.default_region                                // Interpolation Syntax
   profile = var.profile
 
-  assume_role {
-    role_arn = data.terraform_remote_state.jenkins.jenkins_role
-    session_name = var.session
-    external_id = var.external_id
-  }
-
   version = "2.17.0"                                            // AWS plugin version
 }
 
