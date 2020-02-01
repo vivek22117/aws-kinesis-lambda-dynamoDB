@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'dev'
+    }
 
     tools {
         "org.jenkinsci.plugins.terraform.TerraformInstallation" "Terraform"
