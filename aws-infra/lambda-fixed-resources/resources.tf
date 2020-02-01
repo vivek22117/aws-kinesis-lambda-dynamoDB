@@ -6,7 +6,6 @@ resource "aws_kinesis_stream" "rsvp_record_stream" {
   tags = merge(local.common_tags, map("Name", "rsvp-stream"))
 }
 
-
 resource "aws_dynamodb_table" "rsvp_record_table" {
   name = var.db_table_name
 
@@ -59,9 +58,7 @@ resource "aws_dynamodb_table" "rsvp_record_table" {
     write_capacity  = 2
     read_capacity   = 2
     projection_type = "INCLUDE"
-    non_key_attributes = [
-      "rsvp_record",
-    "created_time"]
+    non_key_attributes = ["rsvp_record", "created_time"]
   }
 
   global_secondary_index {
@@ -71,9 +68,7 @@ resource "aws_dynamodb_table" "rsvp_record_table" {
     write_capacity  = 2
     read_capacity   = 2
     projection_type = "INCLUDE"
-    non_key_attributes = [
-      "rsvp_record",
-    "created_time"]
+    non_key_attributes = ["rsvp_record", "created_time"]
   }
 
   tags = merge(local.common_tags, map("Name", "rsvp-dynamoDB"))

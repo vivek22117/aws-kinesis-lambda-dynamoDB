@@ -5,13 +5,37 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class PropertyLoader {
-    String result = "";
 
-    public static String getPropValues(String propertyKey){
+    private static PropertyLoader propertyLoader = null;
+
+    private static final String ENV = "environment";
+    private static final String SUFFIX = ".properties";
+    private static final String PREFIX = "/application";
+
+    private PropertyLoader() {
+    }
+
+    public static PropertyLoader getInstance() {
+        if (propertyLoader == null) {
+            synchronized (PropertyLoader.class) {
+                if (propertyLoader == null) {
+                    propertyLoader = new PropertyLoader();
+                }
+            }
+        }
+        return propertyLoader;
+    }
+
+    public static String getPropValues(String propertyKey) {
+        String propFileName = null;
 
         try {
+            String environment = System.getenv(ENV);
+            if (environment != null) {
+                propFileName = "-" + environment;
+                propFileName = PREFIX + propFileName + SUFFIX;
+            }
             Properties prop = new Properties();
-            String propFileName = "application.properties";
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             InputStream inputStream = loader.getResourceAsStream(propFileName);
 
@@ -20,7 +44,6 @@ public class PropertyLoader {
             } else {
                 throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
             }
-            // get the property value and print it out
             return prop.getProperty(propertyKey);
         } catch (Exception e) {
             return null;

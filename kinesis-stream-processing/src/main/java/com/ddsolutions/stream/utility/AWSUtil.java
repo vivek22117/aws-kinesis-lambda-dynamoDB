@@ -9,6 +9,8 @@ import com.amazonaws.services.cloudwatch.AmazonCloudWatchClient;
 import com.amazonaws.services.cloudwatch.AmazonCloudWatchClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.sns.AmazonSNS;
+import com.amazonaws.services.sns.AmazonSNSClientBuilder;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -31,6 +33,19 @@ public class AWSUtil {
                     .build();
         } catch (Exception ex) {
             LOGGER.error("Exception occurred while fetching sqs aws credentials " + ex.getMessage());
+            throw ex;
+        }
+    }
+
+    public static AmazonSNS getSNSClient(){
+        try{
+            awsCredentials = getAWSCredentials();
+            return AmazonSNSClientBuilder.standard()
+                    .withCredentials(awsCredentials)
+                    .withRegion(Regions.US_EAST_1)
+                    .build();
+        }catch (Exception ex){
+            LOGGER.error("Exception occurred while creating SNS client");
             throw ex;
         }
     }
@@ -62,11 +77,9 @@ public class AWSUtil {
 
     private static AWSCredentialsProvider getAWSCredentials() {
         if (awsCredentials == null) {
-            String caller = PropertyLoader.getPropValues("caller");
-            if (Objects.equals(caller, "lambda")) {
+            boolean isRunningInLambda = Boolean.parseBoolean(PropertyLoader.getPropValues("isRunningInLambda"));
+            if (isRunningInLambda) {
                 awsCredentials = new EnvironmentVariableCredentialsProvider();
-            } else if (Objects.equals(caller, "ec2")) {
-                awsCredentials = new InstanceProfileCredentialsProvider(true);
             } else {
                 awsCredentials = new ProfileCredentialsProvider("doubledigit");
             }

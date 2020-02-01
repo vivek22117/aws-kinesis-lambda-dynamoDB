@@ -135,6 +135,6 @@ locals {
   common_tags = {
     owner       = "Vivek"
     team        = "TeamConcept"
-    environment = "${var.environment}"
+    environment = var.environment
   }
 }

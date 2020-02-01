@@ -1,4 +1,6 @@
-# adding the lambda archive to the defined bucket
+##########################################################
+# Adding the lambda archive to the defined bucket        #
+##########################################################
 resource "aws_s3_bucket_object" "rsvp_lambda_package" {
   bucket = data.terraform_remote_state.backend.outputs.deploy_bucket_name
   key    = var.rsvp_lambda_bucket_key
@@ -8,10 +10,9 @@ resource "aws_s3_bucket_object" "rsvp_lambda_package" {
 
 data "archive_file" "rsvp_lambda_jar" {
   type        = "zip"
-  source_file = "${path.module}/../../kinesis-stream-processing/target/rsvp-record-processing-1.0.0-lambda.zip"
+  source_file = "${path.module}/../../kinesis-stream-processing/target/rsvp-record-processing-1.0.0.jar"
   output_path = "rsvp-lambda-jar/rsvp_lambda_processor.zip"
 }
-
 
 resource "aws_lambda_function" "rsvp_lambda_processor" {
   depends_on = ["aws_iam_role.rsvp_lambda_role", "aws_iam_policy.rsvp_lambda_policy"]
@@ -30,6 +31,13 @@ resource "aws_lambda_function" "rsvp_lambda_processor" {
   memory_size = var.rsvp_lambda_memory
   timeout     = var.rsvp_lambda_timeout
   runtime     = "java8"
+
+  environment {
+    variables = {
+      isRunningInLambda = "true",
+      environment = var.environment
+    }
+  }
 
   tags = merge(local.common_tags, map("Name", "${var.environment}-rsvp-processor"))
 }
