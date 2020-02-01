@@ -25,8 +25,7 @@ pipeline {
             steps {
                 dir('kinesis-stream-processing/') {
                     script {
-                        echo 'Pulling...' + env.BRANCH_NAME
-                        def mvnHome = tool 'Maven 3.3.9'
+                        def mvnHome = tool 'Maven'
                         sh "'${mvnHome}/bin/mvn' clean install Dintegration-tests.skip=true"
                     }
                 }
