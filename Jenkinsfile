@@ -34,13 +34,7 @@ pipeline {
             steps {
                 dir('kinesis-stream-processing/') {
                     script {
-                    echo 'Pulling...' + env.BRANCH_NAME
-                    def mvnHome = tool 'Maven 3.3.9'
-                        bat("${mvnHome}/bin/mvn" -Dintegration-tests.skip=true clean install)
-                        def pom = readMavenPom file: 'pom.xml'
-                        print pom.version
-                        junit '**//*target/surefire-reports/TEST-*.xml'
-                        archive 'target*//*.jar'
+                        sh "mvn clean install Dintegration-tests.skip=true"
                     }
                 }
             }
