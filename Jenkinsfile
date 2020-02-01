@@ -26,7 +26,7 @@ pipeline {
                 dir('kinesis-stream-processing/') {
                     script {
                         def mvnHome = tool 'Maven'
-                        sh "'${mvnHome}/bin/mvn' clean install Dintegration-tests.skip=true"
+                        sh "'${mvnHome}/bin/mvn' clean install -Dintegration-tests.skip=true"
                     }
                 }
             }
