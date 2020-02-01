@@ -78,13 +78,11 @@ pipeline {
                             apply = true;
                         } catch (err) {
                             apply = false
-                            sh "terraform destroy -var 'region=${params.REGION}' -var 'role_arn=${params.ROLE_ARN}' \
-                             -var 'access_key_id=$AWS_ACCESS_KEY_ID' -var 'secret_access_key=$SECRET_ACCESS_KEY' \
-                             -var 'session_token=$SESSION_TOKEN' -force"
+                            sh "terraform destroy -auto-approve -force"
                         }
                         if (apply) {
                             unstash "rsvp-lambda-processor-plan"
-                            sh "terraform apply rsvp-lambda-processor.tfplan"
+                            sh "terraform apply -auto-approve rsvp-lambda-processor.tfplan"
                         }
                     }
                 }
