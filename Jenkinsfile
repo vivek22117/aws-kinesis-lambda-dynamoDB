@@ -16,17 +16,8 @@ pipeline {
         booleanParam(name: 'DESTROY', defaultValue: 'true')
     }
     environment {
-        TF_HOME = tool('Terraform')
-        TF_IN_AUTOMATION = "true"
-        PATH = "$TF_HOME:$PATH"
-        AWS_METADATA_URL = "http://169.254.169.254:80/latest"
-        AWS_METADATA_ENDPOINT = "http://169.254.169.254:80/latest"
-        AWS_METADATA_TIMEOUT = "2s"
+        PATH = "${PATH}:${getTerraformPath()}"
         EMAIL_TO = 'vivekmishra22117@gmail.com'
-        POM_VERSION = readMavenPom().getVersion()
-        BUILD_RELEASE_VERSION = readMavenPom().getVersion().replace("-SNAPSHOT", "")
-        IS_SNAPSHOT = readMavenPom().getVersion().endsWith("-SNAPSHOT")
-        GIT_TAG_COMMIT = sh(script: 'git describe --tags --always', returnStdout: true).trim()
     }
 
     stages {
@@ -83,4 +74,9 @@ pipeline {
             }
         }
     }
+}
+
+def getTerraformPath() {
+    def tfHome = tool name: "Terraform", type: "org.jenkinsci.plugins.terraform.TerraformInstallation"
+    return tfHome
 }
