@@ -7,10 +7,10 @@ pipeline {
         preserveStashes(buildCount: 5)
         timeout(time: 20, unit: 'MINUTES')
         skipStagesAfterUnstable()
+        timestamps()
     }
     parameters {
         string(name: 'REGION', defaultValue: 'us-east-1', description: 'AWS region specified')
-        string(name: 'WORKSPACE', defaultValue: 'development', description: 'workspace to use in Terraform')
         booleanParam(name: 'DESTROY', defaultValue: 'true')
     }
     environment {
@@ -19,6 +19,20 @@ pipeline {
     }
 
     stages {
+        stage('destroy') {
+            steps {
+                dir('aws-infra/lambda-fixed-resources/') {
+                    script {
+                        def isDestroy = $DESTROY
+                        if(isDestroy){
+                            sh "terraform destroy -auto-approve -force"
+                            sh "echo 'Skipped'"
+                            return
+                        }
+                    }
+                }
+            }
+        }
         stage('build') {
             steps {
                 dir('kinesis-stream-processing/') {
@@ -73,6 +87,28 @@ pipeline {
             }
         }
     }
+     post {
+       // Always runs. And it runs before any of the other post conditions.
+       always {
+         // Let's wipe out the workspace before we finish!
+         deleteDir()
+       }
+
+       success {
+        sendEmail('Successful')
+       }
+
+       failure {
+        sendEmail('Failed')
+       }
+     }
+}
+
+def sendEmail(status) {
+    mail(
+            to: "$EMAIL_TO",
+            subject: "Build $BUILD_NUMBER - " + status + " (${currentBuild.fullDisplayName})",
+            body: "Changes:\n " + getChangeString() + "\n\n Check console output at: $BUILD_URL/console" + "\n")
 }
 
 def getTerraformPath() {
