@@ -30,7 +30,7 @@ pipeline {
                         if (isDestroy) {
                             sh "terraform destroy -auto-approve -force"
                             sh "echo 'Skipping all other builds....destroying!'"
-                            return
+                            CONTINUE_BUILD = false
                         }
                         sh "Build started...."
                     }
