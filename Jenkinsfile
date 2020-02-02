@@ -107,8 +107,8 @@ pipeline {
 def sendEmail(status) {
     mail(
             subject: "Build ${env.BUILD_NUMBER} - " + status + " (${currentBuild.fullDisplayName})",
-            body: "Changes:\n " + getChangeString() + "\n\n Check console output at: ${env.BUILD_URL}/console" + "\n")
-            to: "$EMAIL_TO",
+            body: "Changes:\n " + getChangeString() + "\n\n Check console output at: ${env.BUILD_URL}/console" + "\n"),
+            to: "$EMAIL_TO"
 }
 
 def getTerraformPath() {
