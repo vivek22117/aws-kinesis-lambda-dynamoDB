@@ -4,10 +4,10 @@ pipeline {
     }
 
     options {
+        timestamps ()
         preserveStashes(buildCount: 5)
         timeout(time: 20, unit: 'MINUTES')
         skipStagesAfterUnstable()
-        timestamps()
     }
     parameters {
         string(name: 'REGION', defaultValue: 'us-east-1', description: 'AWS region specified')
