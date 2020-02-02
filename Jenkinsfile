@@ -14,7 +14,6 @@ pipeline {
             choices: ['create' , 'destroy'],
             description: '',
             name: 'AWS_INFRA_ACTION')
-        }
     }
     environment {
         PATH = "${PATH}:${getTerraformPath()}"
