@@ -3,10 +3,6 @@ pipeline {
         label 'dev'
     }
 
-    tools {
-        "org.jenkinsci.plugins.terraform.TerraformInstallation" "Terraform"
-    }
-
     options {
         preserveStashes(buildCount: 5)
         timeout(time: 20, unit: 'MINUTES')
