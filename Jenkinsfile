@@ -18,17 +18,21 @@ pipeline {
     }
 
     stages {
-        stage('destroy') {
+        stage('tf-init') {
             steps {
                 dir('aws-infra/lambda-fixed-resources/') {
                     script {
+                        sh "terraform --version"
+                        sh "terraform init"
+                        sh "whoami"
                         sh "echo ${params.DESTROY}"
                         def isDestroy = "${params.DESTROY}"
                         if (isDestroy) {
                             sh "terraform destroy -auto-approve -force"
-                            sh "echo 'Skipping all other builds....'"
+                            sh "echo 'Skipping all other builds....destroying!'"
                             return
                         }
+                        sh "Build started...."
                     }
                 }
             }
@@ -39,17 +43,6 @@ pipeline {
                     script {
                         def mvnHome = tool 'Maven'
                         sh "'${mvnHome}/bin/mvn' clean install -Dintegration-tests.skip=true"
-                    }
-                }
-            }
-        }
-        stage('tf-init') {
-            steps {
-                dir('aws-infra/lambda-fixed-resources/') {
-                    script {
-                        sh "terraform --version"
-                        sh "terraform init"
-                        sh "whoami"
                     }
                 }
             }
