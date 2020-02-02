@@ -10,7 +10,7 @@ pipeline {
     }
     parameters {
         string(name: 'REGION', defaultValue: 'us-east-1', description: 'AWS region specified')
-        booleanParam(name: 'DESTROY', defaultValue: 'true')
+        booleanParam(name: 'DESTROY', defaultValue: true)
     }
     environment {
         PATH = "${PATH}:${getTerraformPath()}"
