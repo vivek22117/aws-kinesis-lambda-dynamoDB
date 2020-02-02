@@ -32,7 +32,7 @@ pipeline {
         stage('destroy') {
             when {
                 expression {
-                    ${params.DESTROY} == true
+                    "${params.DESTROY}" == true
                 }
             }
             steps {
