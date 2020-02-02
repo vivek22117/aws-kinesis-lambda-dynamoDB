@@ -21,6 +21,16 @@ pipeline {
     }
 
     stages {
+        stage('build') {
+            steps {
+                dir('kinesis-stream-processing/') {
+                    script {
+                        def mvnHome = tool 'Maven'
+                        sh "'${mvnHome}/bin/mvn' clean install -Dintegration-tests.skip=true"
+                    }
+                }
+            }
+        }
         stage('tf-init') {
             steps {
                 dir('aws-infra/lambda-fixed-resources/') {
@@ -28,33 +38,6 @@ pipeline {
                         sh "terraform --version"
                         sh "terraform init"
                         sh "whoami"
-                    }
-                }
-            }
-        }
-        stage('destroy') {
-            when {
-                expression {
-                    "${params.AWS_INFRA_ACTION}" == "destroy"
-                }
-            }
-            steps {
-                dir('aws-infra/lambda-fixed-resources/') {
-                    script {
-                        input message: 'Destroy Plan?', ok: 'Destroy'
-                        sh "echo ${params.AWS_INFRA_ACTION}"
-                        sh "terraform destroy -auto-approve"
-                        sh "echo 'Skipping all other builds....destroying!'"
-                    }
-                }
-            }
-        }
-        stage('build') {
-            steps {
-                dir('kinesis-stream-processing/') {
-                    script {
-                        def mvnHome = tool 'Maven'
-                        sh "'${mvnHome}/bin/mvn' clean install -Dintegration-tests.skip=true"
                     }
                 }
             }
@@ -71,7 +54,29 @@ pipeline {
                 }
             }
         }
+        stage('destroy') {
+            when {
+                expression {
+                    "${params.AWS_INFRA_ACTION}" == "destroy"
+                }
+            }
+            steps {
+                dir('aws-infra/lambda-fixed-resources/') {
+                    script {
+                        input message: 'Destroy Plan?', ok: 'Destroy'
+                        sh "echo ${params.AWS_INFRA_ACTION}"
+                        sh "terraform destroy -auto-approve -force"
+                        sh "echo 'Skipping all other builds....destroying!'"
+                    }
+                }
+            }
+        }
         stage('tf-apply') {
+            when {
+                expression {
+                    "${params.AWS_INFRA_ACTION}" == "create"
+                }
+            }
             steps {
                 dir('aws-infra/lambda-fixed-resources/') {
                     script {
@@ -81,9 +86,10 @@ pipeline {
                             apply = true;
                         } catch (err) {
                             apply = false
-                            sh "terraform destroy -auto-approve -force"
+                            sh "echo skipping the AWS infra creation....."
                         }
                         if (apply) {
+                            sh "echo creating AWS infra....."
                             unstash "rsvp-lambda-processor-plan"
                             sh "terraform apply -auto-approve rsvp-lambda-processor.tfplan"
                         }
