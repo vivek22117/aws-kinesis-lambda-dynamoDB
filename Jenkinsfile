@@ -64,9 +64,8 @@ pipeline {
                 dir('aws-infra/lambda-fixed-resources/') {
                     script {
                         input message: 'Destroy Plan?', ok: 'Destroy'
-                        sh "echo ${params.AWS_INFRA_ACTION}"
+                        sh "echo destroying the AWS infra....."
                         sh "terraform destroy -auto-approve -force"
-                        sh "echo 'Skipping all other builds....destroying!'"
                     }
                 }
             }
