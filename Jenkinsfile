@@ -4,7 +4,6 @@ pipeline {
     }
 
     options {
-        timestamps ()
         preserveStashes(buildCount: 5)
         timeout(time: 20, unit: 'MINUTES')
         skipStagesAfterUnstable()
