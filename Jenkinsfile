@@ -22,7 +22,8 @@ pipeline {
             steps {
                 dir('aws-infra/lambda-fixed-resources/') {
                     script {
-                        def isDestroy = ${params.DESTROY}
+                        sh "echo ${params.DESTROY}"
+                        def isDestroy = "${params.DESTROY}"
                         if(isDestroy){
                             sh "terraform destroy -auto-approve -force"
                             sh "echo 'Skipped'"
