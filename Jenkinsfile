@@ -24,6 +24,11 @@ pipeline {
                     script {
                         sh "echo ${params.DESTROY}"
                         def isDestroy = "${params.DESTROY}"
+                        def env = System.getenv() //also get the environment
+                        //then print to confirm
+                        env.each{
+                          println "${it.key} :${it.value}"
+                        }
                         if(isDestroy){
                             sh "terraform destroy -auto-approve -force"
                             sh "echo 'Skipped'"
@@ -107,8 +112,8 @@ pipeline {
 def sendEmail(status) {
     mail(
             to: "$EMAIL_TO",
-            subject: "Build $BUILD_NUMBER - " + status + " (${currentBuild.fullDisplayName})",
-            body: "Changes:\n " + getChangeString() + "\n\n Check console output at: $BUILD_URL/console" + "\n")
+            subject: "Build ${env.BUILD_NUMBER} - " + status + " (${currentBuild.fullDisplayName})",
+            body: "Changes:\n " + getChangeString() + "\n\n Check console output at: ${env.BUILD_URL}/console" + "\n")
 }
 
 def getTerraformPath() {
