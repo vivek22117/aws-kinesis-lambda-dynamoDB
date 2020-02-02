@@ -10,7 +10,11 @@ pipeline {
     }
     parameters {
         string(name: 'REGION', defaultValue: 'us-east-1', description: 'AWS region specified')
-        booleanParam(name: 'DESTROY', defaultValue: true)
+        choice(
+            choices: ['create' , 'destroy'],
+            description: '',
+            name: 'AWS_INFRA_ACTION')
+        }
     }
     environment {
         PATH = "${PATH}:${getTerraformPath()}"
@@ -32,7 +36,7 @@ pipeline {
         stage('destroy') {
             when {
                 expression {
-                    "${params.DESTROY}" == true
+                    "${params.AWS_INFRA_ACTION}" == "destroy"
                 }
             }
             steps {
@@ -41,7 +45,7 @@ pipeline {
                         sh "terraform --version"
                         sh "terraform init"
                         sh "whoami"
-                        sh "echo ${params.DESTROY}"
+                        sh "echo ${params.AWS_INFRA_ACTION}"
                         sh "terraform destroy -auto-approve"
                         sh "echo 'Skipping all other builds....destroying!'"
                     }
