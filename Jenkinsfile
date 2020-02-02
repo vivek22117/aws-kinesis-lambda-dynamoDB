@@ -28,7 +28,7 @@ pipeline {
                         sh "echo ${params.DESTROY}"
                         def isDestroy = "${params.DESTROY}"
                         if (isDestroy) {
-                            sh "terraform destroy -auto-approve -force"
+                            sh "terraform destroy -auto-approve"
                             sh "echo 'Skipping all other builds....destroying!'"
                             CONTINUE_BUILD = false
                         }
