@@ -25,14 +25,25 @@ pipeline {
                         sh "terraform --version"
                         sh "terraform init"
                         sh "whoami"
+                    }
+                }
+            }
+        }
+        stage('destroy') {
+            when {
+                expression {
+                    ${params.DESTROY} == true
+                }
+            }
+            steps {
+                dir('aws-infra/lambda-fixed-resources/') {
+                    script {
+                        sh "terraform --version"
+                        sh "terraform init"
+                        sh "whoami"
                         sh "echo ${params.DESTROY}"
-                        def isDestroy = "${params.DESTROY}"
-                        if (isDestroy) {
-                            sh "terraform destroy -auto-approve"
-                            sh "echo 'Skipping all other builds....destroying!'"
-                            CONTINUE_BUILD = false
-                        }
-                        sh "Build started...."
+                        sh "terraform destroy -auto-approve"
+                        sh "echo 'Skipping all other builds....destroying!'"
                     }
                 }
             }
