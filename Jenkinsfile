@@ -18,7 +18,7 @@ pipeline {
         booleanParam(name: 'DESTROY', defaultValue: 'true')
     }
     environment {
-        PATH = "{PATH}:${getTerraformPath()}"
+        PATH = "${PATH}:${getTerraformPath()}"
         EMAIL_TO = 'vivekmishra22117@gmail.com'
     }
 
