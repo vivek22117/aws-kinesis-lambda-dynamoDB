@@ -11,7 +11,7 @@ pipeline {
     parameters {
         string(name: 'REGION', defaultValue: 'us-east-1', description: 'AWS region specified')
         choice(
-            choices: ['create' , 'destroy'],
+            choices: ['create', 'destroy'],
             description: '',
             name: 'AWS_INFRA_ACTION')
     }
@@ -41,12 +41,12 @@ pipeline {
             steps {
                 dir('aws-infra/lambda-fixed-resources/') {
                     script {
-                        sh "terraform --version"
-                        sh "terraform init"
-                        sh "whoami"
-                        sh "echo ${params.AWS_INFRA_ACTION}"
-                        sh "terraform destroy -auto-approve"
-                        sh "echo 'Skipping all other builds....destroying!'"
+                        try {
+                            input message: 'Destroy Plan?', ok: 'Destroy'
+                            sh "echo ${params.AWS_INFRA_ACTION}"
+                            sh "terraform destroy -auto-approve"
+                            sh "echo 'Skipping all other builds....destroying!'"
+                        }
                     }
                 }
             }
