@@ -23,12 +23,6 @@ pipeline {
                 dir('aws-infra/lambda-fixed-resources/') {
                     script {
                         sh "echo ${params.DESTROY}"
-                        def isDestroy = "${params.DESTROY}"
-                        def env = System.getenv() //also get the environment
-                        //then print to confirm
-                        env.each{
-                          println "${it.key} :${it.value}"
-                        }
                         if(isDestroy){
                             sh "terraform destroy -auto-approve -force"
                             sh "echo 'Skipped'"
