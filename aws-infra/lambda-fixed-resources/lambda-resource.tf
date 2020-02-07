@@ -2,7 +2,7 @@
 # Adding the lambda archive to the defined bucket        #
 ##########################################################
 resource "aws_s3_bucket_object" "rsvp_lambda_package" {
-  bucket = data.terraform_remote_state.backend.outputs.deploy_bucket_name
+  bucket = data.terraform_remote_state.backend.outputs.aritfactory_bucket_name
   key    = var.rsvp_lambda_bucket_key
   source = "${path.module}/../../kinesis-stream-processing/target/rsvp-record-processing-1.0.0-lambda.zip"
   etag   = filemd5("${path.module}/../../kinesis-stream-processing/target/rsvp-record-processing-1.0.0-lambda.zip")
@@ -15,7 +15,7 @@ data "archive_file" "rsvp_lambda_jar" {
 }
 
 resource "aws_lambda_function" "rsvp_lambda_processor" {
-  depends_on = ["aws_iam_role.rsvp_lambda_role", "aws_iam_policy.rsvp_lambda_policy"]
+  depends_on = [aws_iam_role.rsvp_lambda_role, aws_iam_policy.rsvp_lambda_policy]
 
   description = "Lambda function to process RSVP event"
 
@@ -35,7 +35,7 @@ resource "aws_lambda_function" "rsvp_lambda_processor" {
   environment {
     variables = {
       isRunningInLambda = "true",
-      environment = var.environment
+      environment       = var.environment
     }
   }
 
@@ -43,7 +43,7 @@ resource "aws_lambda_function" "rsvp_lambda_processor" {
 }
 
 resource "aws_lambda_event_source_mapping" "kinesis_lambda_event_mapping" {
-  depends_on = ["aws_iam_role.rsvp_lambda_role", "aws_kinesis_stream.rsvp_record_stream", "aws_lambda_function.rsvp_lambda_processor"]
+  depends_on = [aws_iam_role.rsvp_lambda_role, aws_kinesis_stream.rsvp_record_stream, aws_lambda_function.rsvp_lambda_processor]
 
   batch_size        = 100
   event_source_arn  = aws_kinesis_stream.rsvp_record_stream.arn

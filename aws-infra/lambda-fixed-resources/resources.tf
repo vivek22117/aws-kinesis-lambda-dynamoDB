@@ -1,5 +1,6 @@
 resource "aws_kinesis_stream" "rsvp_record_stream" {
-  name             = "${var.stream_name}-${var.environment}"
+  name = "${var.stream_name}-${var.environment}"
+
   shard_count      = var.shard_count
   retention_period = var.stream_retention
 
@@ -52,22 +53,22 @@ resource "aws_dynamodb_table" "rsvp_record_table" {
   }
 
   global_secondary_index {
-    name            = "RSVPEventIndex"
-    hash_key        = "rsvp_with_event_id"
-    range_key       = var.range_key
-    write_capacity  = 2
-    read_capacity   = 2
-    projection_type = "INCLUDE"
+    name               = "RSVPEventIndex"
+    hash_key           = "rsvp_with_event_id"
+    range_key          = var.range_key
+    write_capacity     = 2
+    read_capacity      = 2
+    projection_type    = "INCLUDE"
     non_key_attributes = ["rsvp_record", "created_time"]
   }
 
   global_secondary_index {
-    name            = "RSVPVenueIndex"
-    hash_key        = "rsvp_with_venue_id"
-    range_key       = var.range_key
-    write_capacity  = 2
-    read_capacity   = 2
-    projection_type = "INCLUDE"
+    name               = "RSVPVenueIndex"
+    hash_key           = "rsvp_with_venue_id"
+    range_key          = var.range_key
+    write_capacity     = 2
+    read_capacity      = 2
+    projection_type    = "INCLUDE"
     non_key_attributes = ["rsvp_record", "created_time"]
   }
 

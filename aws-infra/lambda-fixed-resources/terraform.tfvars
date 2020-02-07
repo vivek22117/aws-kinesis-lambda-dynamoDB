@@ -1,5 +1,4 @@
-profile     = "admin"
-environment = "dev"
+profile = "admin"
 
 stream_name      = "rsvp-record-processor-stream"
 shard_count      = "2"

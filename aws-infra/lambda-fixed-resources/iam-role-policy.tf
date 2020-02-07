@@ -1,8 +1,8 @@
 resource "aws_iam_role" "rsvp_lambda_role" {
-  depends_on = ["aws_iam_policy.rsvp_lambda_policy"]
+  depends_on = [
+  aws_iam_policy.rsvp_lambda_policy]
 
-  name = "RSVPLambdaRole"
-
+  name               = "RSVPLambdaRole"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -22,9 +22,10 @@ EOF
 
 resource "aws_iam_policy" "rsvp_lambda_policy" {
   name = "RSVPLambdaProcessorPolicy"
+
   description = "Policy to access DynamoDB"
-  path = "/"
-  policy = <<EOF
+  path        = "/"
+  policy      = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
