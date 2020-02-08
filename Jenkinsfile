@@ -65,7 +65,7 @@ pipeline {
                     script {
                         input message: 'Destroy Plan?', ok: 'Destroy'
                         sh "echo destroying the AWS infra....."
-                        sh "terraform destroy -auto-approve -force"
+                        sh "terraform destroy -var 'environment=${NODE_NAME}' -auto-approve"
                     }
                 }
             }
