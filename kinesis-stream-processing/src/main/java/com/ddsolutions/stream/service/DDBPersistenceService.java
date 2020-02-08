@@ -3,6 +3,7 @@ package com.ddsolutions.stream.service;
 import com.ddsolutions.stream.db.DynamoDBProcessing;
 import com.ddsolutions.stream.domain.RSVPEventRecord;
 import com.ddsolutions.stream.entity.LatestRSVPRecord;
+import com.ddsolutions.stream.exception.ApplicationException;
 import com.ddsolutions.stream.utility.AppUtility;
 import com.ddsolutions.stream.utility.JsonUtility;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -43,14 +44,19 @@ public class DDBPersistenceService {
 
         reportedRecords.add(createDDBRecord(rsvpEventRecord, rsvpTime));
 
-        reportedRecords.forEach(reportedRecord -> {
-            dynamoDBProcessing.save(reportedRecord);
 
-            LOGGER.debug("Last reported record persisted: \n"
-                    + "rsvpEventId: " + reportedRecord.getRsvp_id() + "\n"
-                    + "rsvpWithEventId: " + reportedRecord.getRsvp_with_event_id() + "\n"
-                    + "rsvpWithVenueId: " + reportedRecord.getRsvp_with_venue_id() + "\n"
-                    + "rsvpMakeTime: " + reportedRecord.getRsvp_makeTime() + "\n");
+        reportedRecords.forEach(reportedRecord -> {
+            try {
+                dynamoDBProcessing.save(reportedRecord);
+
+                LOGGER.debug("Last reported record persisted: \n"
+                        + "rsvpEventId: " + reportedRecord.getRsvp_id() + "\n"
+                        + "rsvpWithEventId: " + reportedRecord.getRsvp_with_event_id() + "\n"
+                        + "rsvpWithVenueId: " + reportedRecord.getRsvp_with_venue_id() + "\n"
+                        + "rsvpMakeTime: " + reportedRecord.getRsvp_makeTime() + "\n");
+            } catch (ApplicationException ex) {
+                LOGGER.error(ex.getMessage());
+            }
         });
 
     }

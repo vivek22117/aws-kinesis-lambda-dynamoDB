@@ -1,11 +1,15 @@
 package com.ddsolutions.stream.utility;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class PropertyLoader {
 
+    private static final Logger LOGGER = LogManager.getLogger(PropertyLoader.class);
     private static PropertyLoader propertyLoader = null;
 
     private static final String ENV = "environment";
@@ -37,6 +41,7 @@ public class PropertyLoader {
             }
             Properties prop = new Properties();
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
+            LOGGER.debug("Property file name is.." + propFileName);
             InputStream inputStream = loader.getResourceAsStream(propFileName);
 
             if (inputStream != null) {

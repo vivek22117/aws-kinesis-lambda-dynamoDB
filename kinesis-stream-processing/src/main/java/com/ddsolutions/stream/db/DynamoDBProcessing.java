@@ -8,6 +8,7 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.util.CollectionUtils;
 import com.ddsolutions.stream.domain.RSVPEventRecord;
 import com.ddsolutions.stream.entity.LatestRSVPRecord;
+import com.ddsolutions.stream.exception.ApplicationException;
 import com.ddsolutions.stream.utility.AWSUtil;
 import com.ddsolutions.stream.utility.JsonUtility;
 import org.apache.logging.log4j.LogManager;
@@ -43,6 +44,7 @@ public class DynamoDBProcessing {
             LOGGER.debug("Record persisted successfully in DynamoDB");
         } catch (Exception ex) {
             LOGGER.error("Unable to persist latest rsvp record {}", recordObject.toString(), ex);
+            throw new ApplicationException("Exception in dynamoDB save api call..", ex);
         }
     }
 
