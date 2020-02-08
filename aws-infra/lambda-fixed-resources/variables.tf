@@ -17,12 +17,12 @@ variable "stream_name" {
 }
 
 variable "shard_count" {
-  type        = string
+  type        = number
   description = "Count of shards in kinesis stream"
 }
 
 variable "stream_retention" {
-  type        = string
+  type        = number
   description = "Retention period for kinesis stream"
 }
 
