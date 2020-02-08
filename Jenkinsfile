@@ -22,11 +22,6 @@ pipeline {
 
     stages {
         stage('build') {
-            when {
-                expression {
-                    "${params.AWS_INFRA_ACTION}" != "destroy"
-                }
-            }
             steps {
                 dir('kinesis-stream-processing/') {
                     script {
@@ -70,7 +65,7 @@ pipeline {
                     script {
                         input message: 'Destroy Plan?', ok: 'Destroy'
                         sh "echo destroying the AWS infra....."
-                        sh "terraform destroy -var 'environment=${NODE_NAME}' -auto-approve -force"
+                        sh "terraform destroy -auto-approve -force"
                     }
                 }
             }
