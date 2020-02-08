@@ -26,13 +26,13 @@ public class PropertyLoader {
         return propertyLoader;
     }
 
-    public static String getPropValues(String propertyKey) {
+    public String getPropValues(String propertyKey) {
         String propFileName = null;
 
         try {
-            String environment = System.getenv(ENV);
-            if (environment != null) {
-                propFileName = "-" + environment;
+            String env = System.getenv(ENV);
+            if (env != null) {
+                propFileName = "-" + env;
                 propFileName = PREFIX + propFileName + SUFFIX;
             }
             Properties prop = new Properties();

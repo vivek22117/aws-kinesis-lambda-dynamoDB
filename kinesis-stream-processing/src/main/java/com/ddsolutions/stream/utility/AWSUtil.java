@@ -18,6 +18,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 
+import static com.ddsolutions.stream.utility.PropertyLoader.getInstance;
+
 
 public class AWSUtil {
     private static final Logger LOGGER = LogManager.getLogger(AWSUtil.class);
@@ -77,11 +79,11 @@ public class AWSUtil {
 
     private static AWSCredentialsProvider getAWSCredentials() {
         if (awsCredentials == null) {
-            boolean isRunningInLambda = Boolean.parseBoolean(PropertyLoader.getPropValues("isRunningInLambda"));
+            boolean isRunningInLambda = Boolean.parseBoolean(getInstance().getPropValues("isRunningInLambda"));
             if (isRunningInLambda) {
                 awsCredentials = new EnvironmentVariableCredentialsProvider();
             } else {
-                awsCredentials = new ProfileCredentialsProvider("doubledigit");
+                awsCredentials = new ProfileCredentialsProvider("default");
             }
         }
         return awsCredentials;

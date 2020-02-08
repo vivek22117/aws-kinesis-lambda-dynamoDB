@@ -13,6 +13,8 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.*;
 
+import static com.ddsolutions.stream.utility.PropertyLoader.*;
+import static com.ddsolutions.stream.utility.PropertyLoader.getInstance;
 import static org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace;
 
 public class SNSPublisherService {
@@ -36,8 +38,8 @@ public class SNSPublisherService {
         map.put("errorMessage", exception.getMessage());
         map.put("errorStackTrace", getStackTrace(exception));
         map.put("data", data);
-        String messagePreFix = "AppName: " + PropertyLoader.getPropValues("AppName") + "\n\n"
-                + "Group: " + PropertyLoader.getPropValues("GroupName") + "\n\n"
+        String messagePreFix = "AppName: " + PropertyLoader.getInstance().getPropValues("AppName") + "\n\n"
+                + "Group: " + getInstance().getPropValues("GroupName") + "\n\n"
                 + "Time: " + format.format(Date.from(Instant.now())) + "\n\n";
         sendNotification(messagePreFix.concat(new JsonUtility().convertToJson(map)));
     }
@@ -45,7 +47,7 @@ public class SNSPublisherService {
     private void sendNotification(String message) {
         List<String> messageIds = new ArrayList<>();
         try {
-            String arn = PropertyLoader.getPropValues("SNS_TOPIC_ARN");
+            String arn = getInstance().getPropValues("SNS_TOPIC_ARN");
             PublishResult result = amazonSNS.publish(arn, message);
             messageIds.add(result.getMessageId());
         } catch (Exception e) {

@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ddsolutions.stream.utility.PropertyLoader.getInstance;
+
 public class SQSService {
     private Logger logger = LogManager.getLogger(SQSService.class);
 
@@ -21,8 +23,8 @@ public class SQSService {
     private JsonUtility jsonUtility;
     private boolean dumpToBackoutQueue = false;
 
-    private static final String queueEndpoint = PropertyLoader.getPropValues("SQS.ENDPOINT");
-    private static final String backoutQueueEndpoint = PropertyLoader.getPropValues("ERROR.SQS.ENDPOINT");
+    private static final String queueEndpoint = getInstance().getPropValues("SQS.ENDPOINT");
+    private static final String backoutQueueEndpoint = getInstance().getPropValues("ERROR.SQS.ENDPOINT");
 
 
     public SQSService() {
