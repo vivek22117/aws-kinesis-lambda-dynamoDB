@@ -47,7 +47,7 @@ pipeline {
                 dir('aws-infra/lambda-fixed-resources/') {
                     script {
                         sh "terraform plan -var 'environment=${NODE_NAME}' \
-                            -var-file="${NODE_NAME}.tfvars" -out rsvp-lambda-processor.tfplan; echo \$? > status"
+                            -var-file="'${NODE_NAME}.tfvars'" -out rsvp-lambda-processor.tfplan; echo \$? > status"
                         def exitCode = readFile('status').trim()
                         echo "Terraform Plan Exit Code: ${exitCode}"
                         stash name: "rsvp-lambda-processor-plan", includes: "rsvp-lambda-processor.tfplan"
