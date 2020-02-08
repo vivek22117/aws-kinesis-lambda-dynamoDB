@@ -13,7 +13,6 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.*;
 
-import static com.ddsolutions.stream.utility.PropertyLoader.*;
 import static com.ddsolutions.stream.utility.PropertyLoader.getInstance;
 import static org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace;
 

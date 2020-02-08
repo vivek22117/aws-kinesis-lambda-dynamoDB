@@ -5,7 +5,6 @@ import com.amazonaws.services.sqs.model.*;
 import com.ddsolutions.stream.domain.RSVPEventRecord;
 import com.ddsolutions.stream.utility.AWSUtil;
 import com.ddsolutions.stream.utility.JsonUtility;
-import com.ddsolutions.stream.utility.PropertyLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
