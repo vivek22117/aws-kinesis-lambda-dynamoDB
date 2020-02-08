@@ -22,11 +22,6 @@ pipeline {
 
     stages {
         stage('build') {
-            when {
-                expression {
-                    "${params.AWS_INFRA_ACTION}" != "destroy"
-                }
-            }
             steps {
                 dir('kinesis-stream-processing/') {
                     script {
