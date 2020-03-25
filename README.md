@@ -21,3 +21,6 @@ Project is created with:
 * AWS Kinesis Data Stream
 * AWS DynamoDB 
 * AWS CloudWatch
+
+## Flow-Diagram
+![Data Flow Diagram for RSVP Feeds](./images/flow-diagram.jpg)
