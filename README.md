@@ -15,7 +15,7 @@ them in DynamoDB table.
 ## Technologies & AWS Services
 Project is created with:
 * Java8
-* Terraform for Iaas (Infrastructure as a Code)
+* Terraform for IAC (Infrastructure as Code)
 * Jenkins for Automation of Infra and Code Deployment
 * AWS Lambda
 * AWS Kinesis Data Stream
