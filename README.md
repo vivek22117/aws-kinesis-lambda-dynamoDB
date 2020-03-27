@@ -1,4 +1,4 @@
-## RSVP Records processor & persister using AWS Lambda Serverless Model
+## RSVP Records processor using AWS Lambda Serverless Model
 
 ## Table of contents
 * [General info](#general-info)
