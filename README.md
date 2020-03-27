@@ -23,4 +23,4 @@ Project is created with:
 * AWS CloudWatch
 
 ## Flow-Diagram
-![Data Flow Diagram for RSVP Feeds](./images/flow-diagram.png)
+![Data Flow Diagram for Lambda Processor](./images/flow-diagram.png)
