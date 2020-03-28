@@ -2,7 +2,7 @@ resource "aws_iam_role" "rsvp_lambda_role" {
   depends_on = [
   aws_iam_policy.rsvp_lambda_policy]
 
-  name               = "RSVPLambdaRole"
+  name               = "RSVPLambdaProcessorRole"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",

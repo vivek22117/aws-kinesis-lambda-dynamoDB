@@ -22,6 +22,7 @@ public class DDBPersistenceService {
 
     private static final Logger LOGGER = LogManager.getLogger(DDBPersistenceService.class);
 
+    private CloudwatchOperation cwOperation;
     private DynamoDBProcessing dynamoDBProcessing;
     private JsonUtility jsonUtility;
 
@@ -30,12 +31,14 @@ public class DDBPersistenceService {
     }
 
     public DDBPersistenceService() {
-        this(new DynamoDBProcessing(), new JsonUtility());
+        this(new DynamoDBProcessing(), new JsonUtility(), new CloudwatchOperation());
     }
 
-    DDBPersistenceService(DynamoDBProcessing dynamoDBProcessing, JsonUtility jsonUtility) {
+    DDBPersistenceService(DynamoDBProcessing dynamoDBProcessing, JsonUtility jsonUtility,
+                          CloudwatchOperation cwOperation) {
         this.dynamoDBProcessing = dynamoDBProcessing;
         this.jsonUtility = jsonUtility;
+        this.cwOperation = cwOperation;
     }
 
     public void processRecord(RSVPEventRecord rsvpEventRecord) throws JsonProcessingException {
@@ -43,7 +46,6 @@ public class DDBPersistenceService {
         Instant rsvpTime = Instant.ofEpochMilli(rsvpEventRecord.getMtime());
 
         reportedRecords.add(createDDBRecord(rsvpEventRecord, rsvpTime));
-
 
         reportedRecords.forEach(reportedRecord -> {
             try {
@@ -54,11 +56,13 @@ public class DDBPersistenceService {
                         + "rsvpWithEventId: " + reportedRecord.getRsvp_with_event_id() + "\n"
                         + "rsvpWithVenueId: " + reportedRecord.getRsvp_with_venue_id() + "\n"
                         + "rsvpMakeTime: " + reportedRecord.getRsvp_makeTime() + "\n");
+
+                cwOperation.putMetricDataWithCount("RecordsProcessed", "RSVPRecordsDetails", "RSVPRecordsCount", (double) reportedRecords.size());
             } catch (ApplicationException ex) {
                 LOGGER.error(ex.getMessage());
+                cwOperation.putMetricDataWithCount("RecordsFailed", "RSVPRecordsDetails", "RSVPRecordsCount", (double) reportedRecords.size());
             }
         });
-
     }
 
     public void fetchRSVPRecords(String rsvpId, String eventId, String date, int numberOfRecords) {

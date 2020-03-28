@@ -14,7 +14,7 @@ import java.util.List;
 
 public class CloudwatchOperation {
     private static final Logger LOGGER = LogManager.getLogger(CloudwatchOperation.class);
-    private static final String NAMESPACE = "RSVPLambdaPersister";
+    private static final String NAMESPACE = "RSVPLambdaProcessor";
 
     private AmazonCloudWatchClient cloudWatchClient;
 
@@ -27,6 +27,31 @@ public class CloudwatchOperation {
     }
 
     public void putMetricData(String metricName, String dimensionName, String dimensionValue) {
+        PutMetricDataRequest metricDataRequest = new PutMetricDataRequest();
+
+        List<MetricDatum> metricDatumList = new ArrayList<>();
+        MetricDatum metricDatum = new MetricDatum();
+        metricDatum.setValue(1d);
+        metricDatum.setUnit(StandardUnit.Count);
+        metricDatum.setMetricName(metricName);
+
+        List<Dimension> dimensionList = new ArrayList<>();
+        Dimension dimension = new Dimension();
+        dimension.setName(dimensionName);
+        dimension.setValue(dimensionValue);
+        dimensionList.add(dimension);
+
+        metricDatum.setDimensions(dimensionList);
+        metricDatumList.add(metricDatum);
+
+        metricDataRequest.setMetricData(metricDatumList);
+        metricDataRequest.setNamespace(NAMESPACE);
+
+        cloudWatchClient.putMetricData(metricDataRequest);
+        LOGGER.debug("PutMetric for name space {} is successful", NAMESPACE);
+    }
+
+    public void putMetricDataWithCount(String metricName, String dimensionName, String dimensionValue, Double value) {
         PutMetricDataRequest metricDataRequest = new PutMetricDataRequest();
 
         List<MetricDatum> metricDatumList = new ArrayList<>();

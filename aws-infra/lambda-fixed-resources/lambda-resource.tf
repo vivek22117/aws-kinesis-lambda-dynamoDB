@@ -4,13 +4,13 @@
 resource "aws_s3_bucket_object" "rsvp_lambda_package" {
   bucket = data.terraform_remote_state.backend.outputs.aritfactory_bucket_name
   key    = var.rsvp_lambda_bucket_key
-  source = "${path.module}/../../kinesis-stream-processing/target/rsvp-record-processing-1.0.0-lambda.zip"
-  etag   = filemd5("${path.module}/../../kinesis-stream-processing/target/rsvp-record-processing-1.0.0-lambda.zip")
+  source = "${path.module}/../../kinesis-stream-processing/target/rsvp-processor-lambda-1.0.0-lambda.zip"
+  etag   = filemd5("${path.module}/../../kinesis-stream-processing/target/rsvp-processor-lambda-1.0.0-lambda.zip")
 }
 
 data "archive_file" "rsvp_lambda_jar" {
   type        = "zip"
-  source_file = "${path.module}/../../kinesis-stream-processing/target/rsvp-record-processing-1.0.0.jar"
+  source_file = "${path.module}/../../kinesis-stream-processing/target/rsvp-processor-lambda-1.0.0.jar"
   output_path = "rsvp-lambda-jar/rsvp_lambda_processor.zip"
 }
 

@@ -11,10 +11,10 @@ import java.util.Set;
 @DynamoDBTable(tableName = "rsvp-record-processor-table")
 public class LatestRSVPRecord implements Serializable {
 
-    @DynamoDBRangeKey(attributeName = "rsvp_id")
+    @DynamoDBHashKey(attributeName = "rsvp_id")
     private String rsvp_id;
 
-    @DynamoDBHashKey(attributeName = "rsvp_makeTime")
+    @DynamoDBRangeKey(attributeName = "rsvp_makeTime")
     private String rsvp_makeTime;
 
     @DynamoDBAttribute(attributeName = "created_time")

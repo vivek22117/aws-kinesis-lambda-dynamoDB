@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ddsolutions.stream</groupId>
-    <artifactId>kinesis-stream-processing</artifactId>
+    <artifactId>rsvp-processor-lambda</artifactId>
     <version>1.0.0</version>
 
-    <name>rsvp-record-processing</name>
+    <name>rsvp-processor-lambda</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

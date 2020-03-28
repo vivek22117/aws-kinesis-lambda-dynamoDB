@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'dev'
+        label any
     }
 
     options {
@@ -42,19 +42,6 @@ pipeline {
                 }
             }
         }
-        stage('tf-plan') {
-            steps {
-                dir('aws-infra/lambda-fixed-resources/') {
-                    script {
-                        sh "terraform plan -var 'environment=${NODE_NAME}'/
-                         -var-file='dev.tfvars' -out rsvp-lambda-processor.tfplan; echo \$? > status"
-                        def exitCode = readFile('status').trim()
-                        echo "Terraform Plan Exit Code: ${exitCode}"
-                        stash name: "rsvp-lambda-processor-plan", includes: "rsvp-lambda-processor.tfplan"
-                    }
-                }
-            }
-        }
         stage('destroy') {
             when {
                 expression {
@@ -66,7 +53,26 @@ pipeline {
                     script {
                         input message: 'Destroy Plan?', ok: 'Destroy'
                         sh "echo destroying the AWS infra....."
-                        sh "terraform destroy -var 'environment=${NODE_NAME}' -auto-approve"
+                        sh "terraform destroy -var 'environment=${ENVIRONMENT}' \
+                            -var-file='${ENVIRONMENT}.tfvars' -auto-approve"
+                    }
+                }
+            }
+        }
+        stage('tf-plan') {
+            when {
+                expression {
+                    "${params.AWS_INFRA_ACTION}" == "create"
+                }
+            }
+            steps {
+                dir('aws-infra/lambda-fixed-resources/') {
+                    script {
+                        sh "terraform plan -var 'environment=${ENVIRONMENT}' \
+                         -var-file='${ENVIRONMENT}.tfvars' -out rsvp-lambda-processor.tfplan; echo \$? > status"
+                        def exitCode = readFile('status').trim()
+                        echo "Terraform Plan Exit Code: ${exitCode}"
+                        stash name: "rsvp-lambda-processor-plan", includes: "rsvp-lambda-processor.tfplan"
                     }
                 }
             }

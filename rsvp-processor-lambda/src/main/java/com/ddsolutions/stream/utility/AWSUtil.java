@@ -2,7 +2,6 @@ package com.ddsolutions.stream.utility;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
-import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.cloudwatch.AmazonCloudWatchClient;
@@ -16,7 +15,6 @@ import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Objects;
 
 import static com.ddsolutions.stream.utility.PropertyLoader.getInstance;
 
@@ -47,7 +45,7 @@ public class AWSUtil {
                     .withRegion(Regions.US_EAST_1)
                     .build();
         }catch (Exception ex){
-            LOGGER.error("Exception occurred while creating SNS client");
+            LOGGER.error("Exception occurred while creating SNS client " + ex.getMessage());
             throw ex;
         }
     }
@@ -60,7 +58,7 @@ public class AWSUtil {
                     .withRegion(Regions.US_EAST_1)
                     .build();
         } catch (Exception ex) {
-            LOGGER.error("Exception occurred while fetching dynamodb aws credentials " + ex.getMessage());
+            LOGGER.error("Exception occurred while fetching dynamoDB aws credentials " + ex.getMessage());
             throw ex;
         }
     }
@@ -72,7 +70,7 @@ public class AWSUtil {
                     .withCredentials(awsCredentials)
                     .withRegion(Regions.US_EAST_1).build();
         } catch (Exception ex) {
-            LOGGER.error("Exception occurred while fetching cloudwatch aws credentials " + ex.getMessage());
+            LOGGER.error("Exception occurred while fetching cloud-watch aws credentials " + ex.getMessage());
             throw ex;
         }
     }
@@ -83,7 +81,7 @@ public class AWSUtil {
             if (isRunningInLambda) {
                 awsCredentials = new EnvironmentVariableCredentialsProvider();
             } else {
-                awsCredentials = new ProfileCredentialsProvider("default");
+                awsCredentials = new ProfileCredentialsProvider("admin");
             }
         }
         return awsCredentials;
