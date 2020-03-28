@@ -1,7 +1,3 @@
-output "deploy_bucket" {
-  value = data.terraform_remote_state.backend.outputs.aritfactory_bucket_name
-}
-
 output "kinesis_arn" {
   value = aws_kinesis_stream.rsvp_record_stream.arn
 }

@@ -41,26 +41,51 @@ variable "range_key" {
   description = "DynamoDB table range key"
 }
 
-variable "rsvp_lambda" {
+#####=========================DynamoDB Configuration=================#####
+variable "billing_mode" {
   type        = string
-  description = "RSVP lambda function name"
+  description = "DynamoDB Billing mode. Can be PROVISIONED or PAY_PER_REQUEST"
 }
 
-variable "rsvp_lambda_handler" {
-  type        = string
-  description = "RSVP lambda handler name"
+variable "enable_streams" {
+  type        = bool
+  description = "Enable DynamoDB streams"
 }
 
-variable "rsvp_lambda_memory" {
+variable "stream_view_type" {
   type        = string
-  description = "RSVP lambda memory size"
+  description = "When an item in the table is modified, what information is written to the stream KEYS_ONLY, NEW_IMAGE, OLD_IMAGE, NEW_AND_OLD_IMAGES."
 }
 
-variable "rsvp_lambda_timeout" {
-  type        = string
-  description = "RSVP lambda time out"
+variable "autoscale_min_read_capacity" {
+  type = number
+  description = "DynamoDB autoscaling min read capacity"
 }
 
+variable "autoscale_max_read_capacity" {
+  type = number
+  description = "DynamoDB autoscaling max read capacity"
+}
+
+variable "autoscale_min_write_capacity" {
+  type = number
+  description = "DynamoDB autoscaling min write capacity"
+}
+
+variable "autoscale_max_write_capacity" {
+  type = number
+  description = "DynamoDB autoscaling max write capacity"
+}
+
+variable "enable_encryption" {
+  type        = bool
+  description = "Enable DynamoDB server-side encryption"
+}
+
+variable "enable_point_in_time_recovery" {
+  type        = bool
+  description = "Enable DynamoDB point in time recovery"
+}
 
 #####==========================Default Variables================#####
 variable "default_region" {
@@ -68,69 +93,10 @@ variable "default_region" {
   default = "us-east-1"
 }
 
-variable "rsvp_lambda_bucket_key" {
-  type        = string
-  description = "rsvp lambda jar s3 key"
-  default     = "rsvp-lambda/rsvp_lambda_processor.zip"
-}
-
-
-#####=========================DynamoDB Configuration=================#####
 variable "s3_bucket_prefix" {
   type    = string
   default = "doubledigit-tfstate"
 }
-
-variable "billing_mode" {
-  type        = string
-  default     = "PROVISIONED"
-  description = "DynamoDB Billing mode. Can be PROVISIONED or PAY_PER_REQUEST"
-}
-
-variable "enable_streams" {
-  type        = string
-  default     = "false"
-  description = "Enable DynamoDB streams"
-}
-
-variable "stream_view_type" {
-  type        = string
-  default     = ""
-  description = "When an item in the table is modified, what information is written to the stream KEYS_ONLY, NEW_IMAGE, OLD_IMAGE, NEW_AND_OLD_IMAGES."
-}
-
-variable "autoscale_min_read_capacity" {
-  default     = 2
-  description = "DynamoDB autoscaling min read capacity"
-}
-
-variable "autoscale_max_read_capacity" {
-  default     = 5
-  description = "DynamoDB autoscaling max read capacity"
-}
-
-variable "autoscale_min_write_capacity" {
-  default     = 2
-  description = "DynamoDB autoscaling min write capacity"
-}
-
-variable "autoscale_max_write_capacity" {
-  default     = 5
-  description = "DynamoDB autoscaling max write capacity"
-}
-
-variable "enable_encryption" {
-  type        = string
-  default     = "false"
-  description = "Enable DynamoDB server-side encryption"
-}
-
-variable "enable_point_in_time_recovery" {
-  type        = string
-  default     = "false"
-  description = "Enable DynamoDB point in time recovery"
-}
-
 
 #####===============Local variables==================#####
 locals {

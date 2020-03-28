@@ -30,7 +30,7 @@ class RSVPLambdaProcessorBuilder {
                                 credentials(credentialId)
                             }
                         }
-                        scriptPath(scriptPath)
+                        scriptPath('jenkins/lambda-resources/Jenkinsfile')
                         lightweight(true)
                     }
                 }
