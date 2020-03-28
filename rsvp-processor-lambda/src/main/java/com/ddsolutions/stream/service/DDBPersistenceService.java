@@ -73,7 +73,7 @@ public class DDBPersistenceService {
             throws JsonProcessingException {
         LatestRSVPRecord latestRSVPRecord = new LatestRSVPRecord();
 
-        latestRSVPRecord.setExpiry_time(Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli() / 1000L);
+        latestRSVPRecord.setExpiry_time(Instant.now().plus(2, ChronoUnit.DAYS).toEpochMilli() / 1000L);
         latestRSVPRecord.setCreated_time(Instant.now().truncatedTo(SECONDS).toString());
 
         latestRSVPRecord.setRsvp_with_event_id(createRsvpEventId(rsvpEventRecord));

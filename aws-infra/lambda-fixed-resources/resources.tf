@@ -1,5 +1,5 @@
 resource "aws_kinesis_stream" "rsvp_record_stream" {
-  name = "${var.stream_name}-${var.environment}"
+  name = var.stream_name
 
   shard_count      = var.shard_count
   retention_period = var.stream_retention
