@@ -43,10 +43,6 @@ class LambdaFixedResourceBuilder {
                     defaultNodes([environment])
                     allowedNodes([environment])
                 }
-                labelParam('Node') {
-                    defaultValue(environment)
-                    description('Select the node to execute the job!')
-                }
             }
         }
     }
