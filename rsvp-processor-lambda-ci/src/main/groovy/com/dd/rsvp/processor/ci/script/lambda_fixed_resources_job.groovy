@@ -7,7 +7,7 @@ def factory = this as JobParent
 def listOfEnvironment = ["dev", "qa", "prod"]
 def component = "lambda-fixed-resources-job"
 
-def scriptLocation = "jenkins/"
+def emailId = "vivekmishra22117@gmail.com"
 def description = "Pipeline DSL to create RSVP Lambda fixed resource, Kinesis & DynamoDB"
 def displayName = "Lambda Fixed Resources Job"
 def branchesName = "*/master"
@@ -23,7 +23,7 @@ new LambdaFixedResourceBuilder(
         githubUrl: githubUrl,
         credentialId: 'github',
         environment: listOfEnvironment.get(0),
-        scriptPath: scriptLocation
+        emailId: emailId
 
 ).build()
 
@@ -37,7 +37,7 @@ new LambdaFixedResourceBuilder(
         githubUrl: githubUrl,
         credentialId: 'github',
         environment: listOfEnvironment.get(1),
-        scriptPath: scriptLocation
+        emailId: emailId
 ).build()
 
 
@@ -50,5 +50,5 @@ new LambdaFixedResourceBuilder(
         githubUrl: githubUrl,
         credentialId: 'github',
         environment: listOfEnvironment.get(2),
-        scriptPath: scriptLocation
+        emailId: emailId
 ).build()
