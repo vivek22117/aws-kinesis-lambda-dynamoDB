@@ -20,6 +20,11 @@ pipeline {
 
     stages {
         stage('build') {
+            when {
+                expression {
+                    "${params.AWS_INFRA_ACTION}" == "create"
+                }
+            }
             steps {
                 dir('rsvp-processor-lambda/') {
                     script {
