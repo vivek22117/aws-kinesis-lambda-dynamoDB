@@ -1,6 +1,7 @@
 package com.ddsolutions.stream.utility;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
@@ -14,7 +15,6 @@ import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 
 import static com.ddsolutions.stream.utility.PropertyLoader.getInstance;
 
@@ -37,14 +37,14 @@ public class AWSUtil {
         }
     }
 
-    public static AmazonSNS getSNSClient(){
-        try{
+    public static AmazonSNS getSNSClient() {
+        try {
             awsCredentials = getAWSCredentials();
             return AmazonSNSClientBuilder.standard()
                     .withCredentials(awsCredentials)
                     .withRegion(Regions.US_EAST_1)
                     .build();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             LOGGER.error("Exception occurred while creating SNS client " + ex.getMessage());
             throw ex;
         }
@@ -77,13 +77,14 @@ public class AWSUtil {
 
     private static AWSCredentialsProvider getAWSCredentials() {
         if (awsCredentials == null) {
-            boolean isRunningInLambda = Boolean.parseBoolean(getInstance().getPropValues("isRunningInLambda"));
-            LOGGER.debug("State of isRunningInLambda is " + isRunningInLambda);
+            boolean isRunningInLocal = Boolean.parseBoolean(getInstance().getPropValues("isRunningInLocal"));
 
-            if (isRunningInLambda) {
+            if (isRunningInLocal) {
+                awsCredentials = new ProfileCredentialsProvider("admin");
+            } else if (Boolean.parseBoolean(System.getenv("isRunningInLambda"))) {
                 awsCredentials = new EnvironmentVariableCredentialsProvider();
             } else {
-                awsCredentials = new ProfileCredentialsProvider("admin");
+                awsCredentials = new DefaultAWSCredentialsProviderChain();
             }
         }
         return awsCredentials;
