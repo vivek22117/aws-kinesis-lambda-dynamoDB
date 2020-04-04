@@ -5,7 +5,7 @@ pipeline {
 
     options {
         preserveStashes(buildCount: 5)
-        timeout(time: 20, unit: 'MINUTES')
+        timeout(time: 5, unit: 'MINUTES')
         skipStagesAfterUnstable()
     }
     parameters {
