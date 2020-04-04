@@ -78,6 +78,8 @@ public class AWSUtil {
     private static AWSCredentialsProvider getAWSCredentials() {
         if (awsCredentials == null) {
             boolean isRunningInLambda = Boolean.parseBoolean(getInstance().getPropValues("isRunningInLambda"));
+            LOGGER.debug("State of isRunningInLambda is " + isRunningInLambda);
+
             if (isRunningInLambda) {
                 awsCredentials = new EnvironmentVariableCredentialsProvider();
             } else {

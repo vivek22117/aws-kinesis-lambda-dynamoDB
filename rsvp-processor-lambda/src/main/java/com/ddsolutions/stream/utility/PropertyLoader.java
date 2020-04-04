@@ -49,6 +49,7 @@ public class PropertyLoader {
             } else {
                 throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
             }
+            LOGGER.debug("property value is " + prop.getProperty(propertyKey));
             return prop.getProperty(propertyKey);
         } catch (Exception e) {
             return null;
