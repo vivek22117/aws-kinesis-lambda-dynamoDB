@@ -38,10 +38,9 @@ class RSVPLambdaProcessorBuilder {
             parameters {
                 stringParam('ENVIRONMENT', environment)
                 stringParam('EMAIL_TO', emailId)
-                nodeParam('Label') {
+                labelParam('Node') {
                     description('Select the node to execute the job!')
-                    defaultNodes([environment])
-                    allowedNodes([environment])
+                    defaultValue(environment)
                 }
             }
         }
