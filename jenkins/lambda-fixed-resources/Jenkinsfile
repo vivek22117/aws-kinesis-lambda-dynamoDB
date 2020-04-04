@@ -84,7 +84,7 @@ pipeline {
                         }
                         if (apply) {
                             sh "echo creating AWS infra....."
-                            unstash "rsvp-lambda-processor-plan"
+                            unstash "lambda-fixed-resources-plan"
                             sh "terraform apply -auto-approve lambda-fixed-resources.tfplan"
                         }
                     }
