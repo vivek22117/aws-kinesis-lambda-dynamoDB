@@ -13,7 +13,7 @@ class LambdaFixedResourceBuilder {
     String branchesName
     String credentialId
     String environment
-    String scriptPath
+    String emailId
 
     Job build() {
         dslFactory.pipelineJob(jobName) {
@@ -37,9 +37,16 @@ class LambdaFixedResourceBuilder {
             }
             parameters {
                 stringParam('ENVIRONMENT', environment)
+                stringParam('EMAIL_TO', emailId)
                 nodeParam('Label') {
                     description('Select the node to execute the job!')
                     defaultNodes([environment])
+                    allowedNodes([environment])
+                }
+                labelParam('Node') {
+                    defaultValue(environment)
+                    description('Select the node to execute the job!')
+                    allNodes('allCases', 'IgnoreOfflineNodeEligibility')
                 }
             }
         }

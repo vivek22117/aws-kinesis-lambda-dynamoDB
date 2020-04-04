@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label any
+        label ${ENVIRONMENT}
     }
 
     options {
@@ -9,7 +9,6 @@ pipeline {
         skipStagesAfterUnstable()
     }
     parameters {
-        string(name: 'REGION', defaultValue: 'us-east-1', description: 'AWS region specified')
         choice(
             choices: ['create', 'destroy'],
             description: '',
@@ -17,7 +16,6 @@ pipeline {
     }
     environment {
         PATH = "${PATH}:${getTerraformPath()}"
-        EMAIL_TO = 'vivekmishra22117@gmail.com'
     }
 
     stages {
