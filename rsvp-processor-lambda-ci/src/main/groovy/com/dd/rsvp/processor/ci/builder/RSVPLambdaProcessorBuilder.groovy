@@ -46,7 +46,6 @@ class RSVPLambdaProcessorBuilder {
                 labelParam('Node') {
                     defaultValue(environment)
                     description('Select the node to execute the job!')
-                    allNodes('allCases', 'IgnoreOfflineNodeEligibility')
                 }
             }
         }
