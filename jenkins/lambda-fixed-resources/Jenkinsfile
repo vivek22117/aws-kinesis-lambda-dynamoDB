@@ -1,6 +1,8 @@
 pipeline {
     agent {
-        label $ENVIRONMENT
+        node {
+            label $ENVIRONMENT
+        }
     }
 
     options {
