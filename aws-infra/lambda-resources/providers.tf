@@ -1,6 +1,6 @@
 provider "aws" {
   region  = var.default_region // Interpolation Syntax
-//  profile = var.profile
+  profile = var.profile
 
   version = ">=2.22" // AWS plugin version
 }

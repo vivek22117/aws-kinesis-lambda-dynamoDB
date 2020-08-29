@@ -40,6 +40,7 @@ public class KinesisStreamProcessor {
     public void processLatestReportedEvent(KinesisEvent kinesisEvent) {
         LOGGER.info("Processing started for kinesis event......");
         List<KinesisEvent.KinesisEventRecord> records = kinesisEvent.getRecords();
+
         try {
             records.stream()
                     .map(x -> UserRecord.deaggregate(Collections.singletonList(x.getKinesis())))

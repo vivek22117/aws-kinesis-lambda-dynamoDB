@@ -81,6 +81,7 @@ public class AWSUtil {
 
             if (isRunningInLocal) {
                 awsCredentials = new ProfileCredentialsProvider("admin");
+
             } else if (Boolean.parseBoolean(System.getenv("isRunningInLambda"))) {
                 awsCredentials = new EnvironmentVariableCredentialsProvider();
             } else {

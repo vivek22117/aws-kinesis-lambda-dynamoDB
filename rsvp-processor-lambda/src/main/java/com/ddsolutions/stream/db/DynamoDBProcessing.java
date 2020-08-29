@@ -73,7 +73,9 @@ public class DynamoDBProcessing {
         }
 
         List<RSVPEventRecord> rsvpRecords = query.getResults().
-                stream().map(LatestRSVPRecord::getRsvp_record).flatMap(Collection::stream)
+                stream()
+                .map(LatestRSVPRecord::getRsvp_record)
+                .flatMap(Collection::stream)
                 .map(record -> {
                     try {
                         return new JsonUtility().convertFromJson(record, RSVPEventRecord.class);
@@ -81,7 +83,9 @@ public class DynamoDBProcessing {
                         LOGGER.error("Unable to parse json string");
                         return null;
                     }
-                }).filter(Objects::nonNull).collect(toList());
+                })
+                .filter(Objects::nonNull)
+                .collect(toList());
 
         return rsvpRecords.stream()
                 .sorted(Comparator.comparingLong(RSVPEventRecord::getMtime).reversed())

@@ -1,5 +1,5 @@
 output "deploy_bucket" {
-  value = data.terraform_remote_state.backend.outputs.aritfactory_bucket_name
+  value = data.terraform_remote_state.backend.outputs.artifactory_bucket_name
 }
 
 output "lambda_arn" {

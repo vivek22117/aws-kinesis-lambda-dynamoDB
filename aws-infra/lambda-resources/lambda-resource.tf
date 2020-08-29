@@ -2,7 +2,7 @@
 # Adding the lambda archive to the defined bucket        #
 ##########################################################
 resource "aws_s3_bucket_object" "rsvp_lambda_package" {
-  bucket = data.terraform_remote_state.backend.outputs.aritfactory_bucket_name
+  bucket = data.terraform_remote_state.backend.outputs.artifactory_bucket_name
   key    = var.rsvp_lambda_bucket_key
   source = "${path.module}/../../rsvp-processor-lambda/target/rsvp-processor-lambda-1.0.0-lambda.zip"
   etag   = filemd5("${path.module}/../../rsvp-processor-lambda/target/rsvp-processor-lambda-1.0.0-lambda.zip")
