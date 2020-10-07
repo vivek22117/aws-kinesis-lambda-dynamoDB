@@ -44,6 +44,7 @@ resource "aws_iam_policy" "rsvp_lambda_policy" {
         "cloudwatch:PutMetricAlarm",
         "cloudwatch:GetMetricStatistics",
         "cloudwatch:ListMetrics",
+        "cloudwatch:PutMetricData",
         "cloudwatch:DescribeAlarms"
       ],
       "Resource": "*"
