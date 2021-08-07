@@ -3,7 +3,6 @@
 ####################################################
 provider "aws" {
   region  = var.default_region
-  profile = var.profile
 }
 
 
@@ -42,7 +41,6 @@ terraform {
 
 
   backend "s3" {
-    profile = "qa-admin"
     region  = "us-east-1"
     encrypt = "true"
   }
