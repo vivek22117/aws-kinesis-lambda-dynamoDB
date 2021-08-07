@@ -46,6 +46,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '1.8'
+          distribution: 'adopt'
 
       # Build Maven Project
       - name: Build Maven Project
