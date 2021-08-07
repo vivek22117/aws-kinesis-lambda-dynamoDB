@@ -51,7 +51,7 @@ jobs:
 
       # Build Maven Project
       - name: Build Maven Project
-        working-directory: ${{ evn.maven_dir }}
+        working-directory: ${{ env.maven_dir }}
         run: mvn clean install -Dintegration-tests.skip=true
 
       #  Configure AWS Credentials using IAM Role
