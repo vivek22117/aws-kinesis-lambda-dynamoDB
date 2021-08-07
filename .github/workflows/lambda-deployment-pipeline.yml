@@ -19,6 +19,7 @@ on:
 env:
   tf_version: '0.13.5'
   tf_working_dir_app: './aws-infra/lambda-resources/'
+  maven_dir: './rsvp-processor-lambda/'
   aws_region: 'us-east-1'
   environment: ${{ github.event.inputs.env }}
 
@@ -50,6 +51,7 @@ jobs:
 
       # Build Maven Project
       - name: Build Maven Project
+        working-directory: ${{ evn.maven_dir }}
         run: mvn clean install -Dintegration-tests.skip=true
 
       #  Configure AWS Credentials using IAM Role
