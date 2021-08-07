@@ -4,7 +4,7 @@
 resource "aws_s3_bucket_object" "rsvp_lambda_package" {
   depends_on = [data.archive_file.rsvp_lambda_jar]
 
-  bucket = data.terraform_remote_state.backend.outputs.artifactory_bucket_name
+  bucket = data.terraform_remote_state.s3_buckets.outputs.artifactory_s3_name
   key    = var.rsvp_lambda_bucket_key
   source = "${path.module}/../../rsvp-processor-lambda/target/rsvp-processor-lambda-1.0.0-lambda.zip"
   etag   = filemd5("${path.module}/../../rsvp-processor-lambda/target/rsvp-processor-lambda-1.0.0-lambda.zip")
