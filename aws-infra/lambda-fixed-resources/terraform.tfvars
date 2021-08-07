@@ -1,5 +1,3 @@
-profile = "admin"
-
 stream_name      = "rsvp-record-processor-stream"
 shard_count      = "2"
 stream_retention = "24"
