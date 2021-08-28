@@ -8,7 +8,7 @@
     <artifactId>rsvp-processor-lambda</artifactId>
     <version>1.0.0</version>
 
-    <name>rsvp-processor-lambda</name>
+    <name>rsvp-processor</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -121,7 +121,7 @@
     </dependencies>
 
     <build>
-        <finalName>${project.name}-1.0.0</finalName>
+        <finalName>${project.name}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
