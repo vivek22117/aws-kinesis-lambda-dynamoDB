@@ -88,11 +88,6 @@ variable "default_region" {
   default = "us-east-1"
 }
 
-variable "s3_bucket_prefix" {
-  type    = string
-  default = "doubledigit-tfstate"
-}
-
 #####===============Local variables==================#####
 locals {
   common_tags = {

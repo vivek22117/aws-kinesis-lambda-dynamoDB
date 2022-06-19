@@ -31,11 +31,6 @@ variable "default_region" {
   default = "us-east-1"
 }
 
-variable "s3_bucket_prefix" {
-  type    = string
-  default = "doubledigit-tfstate"
-}
-
 variable "rsvp_lambda_bucket_key" {
   type        = string
   description = "rsvp lambda jar s3 key"
