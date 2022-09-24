@@ -4,8 +4,9 @@ module "lambda-processor" {
   environment    = var.environment
   default_region = var.default_region
 
-  rsvp_lambda         = var.rsvp_lambda
-  rsvp_lambda_handler = var.rsvp_lambda_handler
-  rsvp_lambda_memory  = var.rsvp_lambda_memory
-  rsvp_lambda_timeout = var.rsvp_lambda_timeout
+  rsvp_lambda            = var.rsvp_lambda
+  rsvp_lambda_handler    = var.rsvp_lambda_handler
+  rsvp_lambda_memory     = var.rsvp_lambda_memory
+  rsvp_lambda_timeout    = var.rsvp_lambda_timeout
+  rsvp_lambda_bucket_key = var.rsvp_lambda_bucket_key
 }
