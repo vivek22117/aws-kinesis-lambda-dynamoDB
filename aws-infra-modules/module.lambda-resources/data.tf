@@ -21,3 +21,5 @@ data "terraform_remote_state" "lambda_fixed_resources" {
     region = var.default_region
   }
 }
+
+data "aws_caller_identity" "current" {}

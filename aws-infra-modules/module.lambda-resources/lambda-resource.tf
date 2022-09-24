@@ -1,7 +1,8 @@
 ##########################################################
 # Adding the lambda archive to the defined bucket        #
 ##########################################################
-resource "aws_s3_bucket_object" "rsvp_lambda_package" {
+resource "aws_s3_object" "rsvp_lambda_package" {
+
   bucket = data.terraform_remote_state.s3_buckets.outputs.artifactory_s3_name
   key    = var.rsvp_lambda_bucket_key
   source = "${path.module}/../../rsvp-processor-lambda/target/rsvp-processor-lambda.zip"
@@ -16,8 +17,8 @@ resource "aws_lambda_function" "rsvp_lambda_processor" {
   function_name = var.rsvp_lambda
   handler       = var.rsvp_lambda_handler
 
-  s3_bucket = aws_s3_bucket_object.rsvp_lambda_package.bucket
-  s3_key    = aws_s3_bucket_object.rsvp_lambda_package.key
+  s3_bucket = aws_s3_object.rsvp_lambda_package.bucket
+  s3_key    = aws_s3_object.rsvp_lambda_package.key
 
   source_code_hash = filebase64sha256("${path.module}/../../rsvp-processor-lambda/target/rsvp-processor-lambda.zip")
   role             = aws_iam_role.rsvp_lambda_role.arn
