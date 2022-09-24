@@ -53,22 +53,22 @@ variable "stream_view_type" {
 }
 
 variable "autoscale_min_read_capacity" {
-  type = number
+  type        = number
   description = "DynamoDB autoscaling min read capacity"
 }
 
 variable "autoscale_max_read_capacity" {
-  type = number
+  type        = number
   description = "DynamoDB autoscaling max read capacity"
 }
 
 variable "autoscale_min_write_capacity" {
-  type = number
+  type        = number
   description = "DynamoDB autoscaling min write capacity"
 }
 
 variable "autoscale_max_write_capacity" {
-  type = number
+  type        = number
   description = "DynamoDB autoscaling max write capacity"
 }
 
