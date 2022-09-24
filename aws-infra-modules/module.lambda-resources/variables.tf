@@ -34,7 +34,6 @@ variable "default_region" {
 variable "rsvp_lambda_bucket_key" {
   type        = string
   description = "rsvp lambda jar s3 key"
-  default     = "lambda/rsvp-lambda/rsvp_lambda_processor.zip"
 }
 
 #####===============Local variables==================#####
